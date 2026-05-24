@@ -1,0 +1,2159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sevenine — Staff Certification Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue:#007AFF; --blu-lt:#EAF3FF; --black:#000; --g1:#1C1C1E; --g2:#3A3A3C;
+  --g3:#636366; --g4:#AEAEB2; --g5:#E5E5EA; --g6:#F2F2F7; --white:#fff;
+  --green:#34C759; --orange:#FF9500; --red:#FF3B30; --purple:#AF52DE; --pur-lt:#F5EEFF;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--g6);color:var(--g1);min-height:100vh}
+.bk{font-family:'DM Serif Display',serif;color:var(--black);letter-spacing:-.4px}
+.bb{font-family:'DM Serif Display',serif;color:var(--blue);letter-spacing:-.4px}
+
+/* TOP BAR */
+.top-bar{padding:18px 28px 14px;border-bottom:.5px solid var(--g5);display:flex;align-items:center;
+  justify-content:space-between;background:var(--white);position:sticky;top:0;z-index:100;
+  box-shadow:0 1px 8px rgba(0,0,0,.04)}
+.top-bar-brand{font-size:22px}
+.doc-badge{font-size:11px;font-weight:600;color:var(--blue);background:var(--blu-lt);
+  padding:4px 12px;border-radius:20px;letter-spacing:.02em}
+.top-bar-right{display:flex;align-items:center;gap:10px}
+.back-btn{display:flex;align-items:center;gap:5px;background:var(--g6);border:.5px solid var(--g5);
+  border-radius:8px;padding:7px 14px;font-size:13px;font-weight:500;color:var(--g2);
+  cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.back-btn:hover{background:var(--g5)}
+
+/* FOOTER */
+.footer{padding:14px 28px;border-top:.5px solid var(--g5);display:flex;align-items:center;
+  justify-content:space-between;background:var(--white);margin-top:auto}
+.footer-brand{font-size:14px}
+.footer-meta{font-size:10px;color:var(--g4);letter-spacing:.04em}
+
+/* SCREENS */
+.screen{display:none}
+.screen.active{display:flex;flex-direction:column;min-height:100vh}
+.main{flex:1;padding:36px 20px 56px}
+
+/* LANDING */
+.landing-hero{text-align:center;max-width:480px;margin:0 auto 40px}
+.landing-eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--g4);margin-bottom:14px}
+.landing-title{font-family:'DM Serif Display',serif;font-size:34px;color:var(--black);
+  line-height:1.18;margin-bottom:14px}
+.landing-sub{font-size:15px;color:var(--g3);line-height:1.6}
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:680px;margin:0 auto}
+@media(max-width:560px){.role-grid{grid-template-columns:1fr}}
+.role-card{background:var(--white);border-radius:20px;border:2px solid var(--g5);padding:32px 28px;
+  cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .15s;text-align:left;
+  position:relative;overflow:hidden}
+.role-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:20px 20px 0 0}
+.role-card.tutor::before{background:linear-gradient(90deg,var(--blue),#5AC8FA)}
+.role-card.admin::before{background:linear-gradient(90deg,var(--purple),#FF6CAB)}
+.role-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.1)}
+.role-card.tutor:hover{border-color:var(--blue)}
+.role-card.admin:hover{border-color:var(--purple)}
+.role-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;
+  justify-content:center;margin-bottom:18px;font-size:22px}
+.role-card.tutor .role-icon{background:var(--blu-lt)}
+.role-card.admin .role-icon{background:var(--pur-lt)}
+.role-name{font-family:'DM Serif Display',serif;font-size:22px;color:var(--black);margin-bottom:6px}
+.role-desc{font-size:13px;color:var(--g3);line-height:1.55;margin-bottom:20px}
+.role-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;
+  letter-spacing:.04em;padding:4px 10px;border-radius:20px}
+.role-card.tutor .role-badge{background:var(--blu-lt);color:var(--blue)}
+.role-card.admin .role-badge{background:var(--pur-lt);color:var(--purple)}
+.role-arrow{position:absolute;right:22px;bottom:22px;font-size:18px;color:var(--g5);transition:color .2s}
+.role-card:hover .role-arrow{color:var(--g3)}
+
+/* HUB */
+.hub-header{max-width:700px;margin:0 auto 28px;display:flex;align-items:center;gap:16px}
+.hub-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;
+  justify-content:center;font-size:26px;flex-shrink:0}
+.hub-icon.tutor{background:var(--blu-lt)}
+.hub-icon.admin{background:var(--pur-lt)}
+.hub-title{font-family:'DM Serif Display',serif;font-size:26px;color:var(--black)}
+.hub-sub{font-size:13px;color:var(--g3);margin-top:3px}
+.hub-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:700px;margin:0 auto}
+@media(max-width:520px){.hub-cards{grid-template-columns:1fr}}
+.hub-card{background:var(--white);border-radius:18px;border:1.5px solid var(--g5);
+  padding:28px 24px;cursor:pointer;transition:all .2s;text-align:left}
+.hub-card:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(0,0,0,.08)}
+.hub-card.training:hover{border-color:var(--orange)}
+.hub-card.cert.tutor:hover{border-color:var(--blue)}
+.hub-card.cert.admin:hover{border-color:var(--purple)}
+.hub-card-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;
+  justify-content:center;font-size:20px;margin-bottom:14px}
+.hub-card.training .hub-card-icon{background:rgba(255,149,0,.12)}
+.hub-card.cert.tutor .hub-card-icon{background:var(--blu-lt)}
+.hub-card.cert.admin .hub-card-icon{background:var(--pur-lt)}
+.hub-card-title{font-size:16px;font-weight:600;color:var(--g1);margin-bottom:6px}
+.hub-card-desc{font-size:13px;color:var(--g3);line-height:1.55;margin-bottom:16px}
+.hub-card-meta{font-size:11px;font-weight:600;color:var(--g4);letter-spacing:.06em;text-transform:uppercase}
+
+/* TRAINING QUIZ SELECTOR */
+.quiz-selector{max-width:700px;margin:0 auto}
+.quiz-selector-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--black);
+  margin-bottom:6px;text-align:center}
+.quiz-selector-sub{font-size:13px;color:var(--g3);text-align:center;margin-bottom:28px}
+.quiz-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.quiz-tile{background:var(--white);border-radius:14px;border:1.5px solid var(--g5);
+  padding:18px 16px;cursor:pointer;transition:all .18s;text-align:left}
+.quiz-tile:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.quiz-tile.tutor:hover{border-color:var(--blue)}
+.quiz-tile.admin:hover{border-color:var(--purple)}
+.quiz-tile-num{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  margin-bottom:6px}
+.quiz-tile.tutor .quiz-tile-num{color:var(--blue)}
+.quiz-tile.admin .quiz-tile-num{color:var(--purple)}
+.quiz-tile-name{font-size:14px;font-weight:600;color:var(--g1);margin-bottom:4px;line-height:1.35}
+.quiz-tile-meta{font-size:12px;color:var(--g4)}
+
+/* PASSWORD */
+.pw-shell{max-width:420px;margin:0 auto;background:var(--white);border-radius:20px;
+  box-shadow:0 2px 4px rgba(0,0,0,.06),0 12px 40px rgba(0,0,0,.08);overflow:hidden}
+.pw-accent{height:4px}
+.pw-accent.tutor{background:linear-gradient(90deg,var(--blue),#5AC8FA)}
+.pw-accent.admin{background:linear-gradient(90deg,var(--purple),#FF6CAB)}
+.pw-body{padding:36px 32px;text-align:center}
+.pw-lock{font-size:36px;margin-bottom:16px}
+.pw-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--black);margin-bottom:8px}
+.pw-sub{font-size:13px;color:var(--g3);line-height:1.55;margin-bottom:28px}
+.pw-input-wrap{position:relative;margin-bottom:12px;text-align:left}
+.pw-input{width:100%;padding:13px 44px 13px 16px;border:1.5px solid var(--g5);border-radius:12px;
+  font-family:'DM Sans',sans-serif;font-size:15px;color:var(--g1);background:var(--g6);
+  outline:none;transition:all .15s;letter-spacing:.08em}
+.pw-input:focus{border-color:var(--blue);background:var(--white)}
+.pw-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  cursor:pointer;color:var(--g4);font-size:16px;user-select:none}
+.pw-btn{width:100%;padding:14px;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;
+  font-size:15px;font-weight:600;cursor:pointer;transition:all .15s;margin-bottom:10px;color:var(--white)}
+.pw-btn.tutor{background:var(--blue)}
+.pw-btn.admin{background:var(--purple)}
+.pw-btn:hover{opacity:.88}
+.pw-error{background:rgba(255,59,48,.08);border:1px solid rgba(255,59,48,.2);border-radius:10px;
+  padding:10px 14px;font-size:13px;color:var(--red);margin-bottom:12px;display:none}
+.pw-attempts{font-size:12px;color:var(--g4)}
+.pw-lockout{background:rgba(255,149,0,.08);border:1px solid rgba(255,149,0,.25);border-radius:10px;
+  padding:14px;font-size:13px;color:var(--orange);display:none;margin-bottom:12px;text-align:center}
+
+/* QUIZ */
+.quiz-wrap{max-width:700px;margin:0 auto}
+.quiz-meta-bar{display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;gap:12px;flex-wrap:wrap}
+.quiz-progress-label{font-size:13px;font-weight:500;color:var(--g3);white-space:nowrap}
+.quiz-progress-bar-wrap{flex:1;height:6px;background:var(--g5);border-radius:99px;
+  min-width:80px;overflow:hidden}
+.quiz-progress-fill{height:100%;border-radius:99px;transition:width .4s ease}
+.quiz-progress-fill.tutor{background:var(--blue)}
+.quiz-progress-fill.admin{background:var(--purple)}
+.quiz-timer{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--g2);
+  background:var(--white);border:1px solid var(--g5);border-radius:10px;padding:6px 12px;white-space:nowrap}
+.quiz-timer.warning{color:var(--orange);border-color:rgba(255,149,0,.3);background:rgba(255,149,0,.06)}
+.quiz-timer.danger{color:var(--red);border-color:rgba(255,59,48,.3);background:rgba(255,59,48,.06)}
+
+.quiz-card{background:var(--white);border-radius:20px;
+  box-shadow:0 1px 3px rgba(0,0,0,.06),0 8px 28px rgba(0,0,0,.06);overflow:hidden;margin-bottom:16px}
+.quiz-card-header{padding:18px 24px 14px;border-bottom:.5px solid var(--g5);
+  display:flex;align-items:center;justify-content:space-between;gap:12px}
+.quiz-module-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 9px;border-radius:20px;flex-shrink:0}
+.quiz-module-tag.tutor{background:var(--blu-lt);color:var(--blue)}
+.quiz-module-tag.admin{background:var(--pur-lt);color:var(--purple)}
+.quiz-q-num{font-size:12px;font-weight:600;color:var(--g4);flex-shrink:0}
+
+.quiz-q-text{padding:22px 24px 8px;font-size:15px;font-weight:500;color:var(--g1);line-height:1.6}
+.quiz-q-note{padding:0 24px 14px;font-size:12px;color:var(--g4);font-style:italic}
+
+/* multi-select note */
+.multi-note{display:inline-block;margin:0 24px 6px;font-size:11px;font-weight:600;
+  color:var(--orange);background:rgba(255,149,0,.1);border-radius:6px;padding:3px 8px;
+  letter-spacing:.03em}
+
+.quiz-options{padding:8px 16px 16px;display:flex;flex-direction:column;gap:10px}
+.quiz-option{display:flex;align-items:flex-start;gap:13px;padding:14px 16px;border-radius:12px;
+  border:1.5px solid var(--g5);background:var(--g6);cursor:pointer;transition:all .15s;
+  text-align:left;width:100%;font-family:'DM Sans',sans-serif}
+.quiz-option:hover:not(:disabled):not(.correct):not(.wrong):not(.missed){
+  border-color:var(--blue);background:var(--blu-lt)}
+.quiz-option.selected{border-color:var(--blue);background:var(--blu-lt)}
+.quiz-option.correct{border-color:var(--green);background:rgba(52,199,89,.08);cursor:default}
+.quiz-option.wrong{border-color:var(--red);background:rgba(255,59,48,.07);cursor:default}
+.quiz-option.missed{border-color:var(--green);background:rgba(52,199,89,.05);cursor:default}
+.quiz-option:disabled{cursor:default}
+.opt-letter{width:26px;height:26px;border-radius:8px;flex-shrink:0;display:flex;
+  align-items:center;justify-content:center;font-size:12px;font-weight:700;
+  background:var(--white);border:1px solid var(--g5);color:var(--g3);transition:all .15s}
+.quiz-option.selected .opt-letter{background:var(--blue);border-color:var(--blue);color:var(--white)}
+.quiz-option.correct .opt-letter{background:var(--green);border-color:var(--green);color:var(--white)}
+.quiz-option.wrong .opt-letter{background:var(--red);border-color:var(--red);color:var(--white)}
+.quiz-option.missed .opt-letter{background:rgba(52,199,89,.5);border-color:var(--green);color:var(--white)}
+.opt-text{font-size:14px;color:var(--g1);line-height:1.5;padding-top:3px}
+
+/* Open-ended question */
+.open-q-wrap{padding:8px 16px 20px}
+.open-q-textarea{width:100%;min-height:120px;padding:14px;border:1.5px solid var(--g5);
+  border-radius:12px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--g1);
+  background:var(--g6);resize:vertical;outline:none;line-height:1.6;transition:all .15s}
+.open-q-textarea:focus{border-color:var(--blue);background:var(--white)}
+.open-q-label{font-size:11px;font-weight:600;color:var(--g4);letter-spacing:.06em;
+  text-transform:uppercase;margin-bottom:8px;display:block}
+.open-q-hint{font-size:12px;color:var(--g4);margin-top:8px;font-style:italic}
+.open-q-ref{margin-top:12px;background:rgba(52,199,89,.07);border:1px solid rgba(52,199,89,.2);
+  border-radius:10px;padding:12px 14px;font-size:13px;color:#1a7a37;display:none;line-height:1.55}
+.open-q-ref-title{font-weight:700;margin-bottom:4px;font-size:12px;text-transform:uppercase;
+  letter-spacing:.05em}
+
+.quiz-feedback{margin:0 16px 16px;padding:14px 16px;border-radius:12px;font-size:13px;
+  line-height:1.55;display:none}
+.quiz-feedback.correct{background:rgba(52,199,89,.08);border:1px solid rgba(52,199,89,.25);color:#1a7a37}
+.quiz-feedback.wrong{background:rgba(255,59,48,.07);border:1px solid rgba(255,59,48,.2);color:#c0392b}
+.quiz-feedback.open-info{background:var(--blu-lt);border:1px solid rgba(0,122,255,.2);color:var(--blue)}
+
+.quiz-nav{display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px 16px;gap:10px}
+.quiz-nav-btn{padding:11px 22px;border-radius:12px;border:none;font-family:'DM Sans',sans-serif;
+  font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+.quiz-nav-btn:active{transform:scale(.97)}
+.quiz-nav-btn.primary{background:var(--blue);color:var(--white)}
+.quiz-nav-btn.primary.admin-col{background:var(--purple)}
+.quiz-nav-btn.ghost{background:var(--g6);color:var(--g2);border:.5px solid var(--g5)}
+.quiz-nav-btn:disabled{opacity:.35;cursor:default}
+
+.training-score-bar{background:var(--white);border-radius:14px;border:1px solid var(--g5);
+  padding:14px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.training-score-label{font-size:13px;color:var(--g3)}
+.training-score-val{font-size:15px;font-weight:700;color:var(--g1)}
+
+/* RESULT */
+.result-shell{max-width:520px;margin:0 auto;background:var(--white);border-radius:24px;
+  box-shadow:0 2px 4px rgba(0,0,0,.06),0 12px 40px rgba(0,0,0,.08);overflow:hidden}
+.result-accent{height:5px}
+.result-accent.pass{background:linear-gradient(90deg,var(--green),#30D158)}
+.result-accent.fail{background:linear-gradient(90deg,var(--red),#FF6B6B)}
+.result-body{padding:40px 36px;text-align:center}
+.result-stamp{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:36px;margin:0 auto 20px}
+.result-stamp.pass{background:rgba(52,199,89,.12)}
+.result-stamp.fail{background:rgba(255,59,48,.08)}
+.result-verdict{font-family:'DM Serif Display',serif;font-size:26px;margin-bottom:6px}
+.result-verdict.pass{color:var(--green)}
+.result-verdict.fail{color:var(--red)}
+.result-sub{font-size:14px;color:var(--g3);margin-bottom:28px;line-height:1.5}
+.result-score-ring{width:110px;height:110px;border-radius:50%;margin:0 auto 24px;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative}
+.result-score-num{font-family:'DM Serif Display',serif;font-size:26px;color:var(--black)}
+.result-score-label{font-size:11px;color:var(--g4);font-weight:600}
+.result-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px}
+.result-stat{background:var(--g6);border-radius:12px;padding:14px 10px;text-align:center}
+.result-stat-num{font-size:20px;font-weight:700;color:var(--g1);margin-bottom:3px}
+.result-stat-lbl{font-size:11px;color:var(--g4);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.result-stat-num.green{color:var(--green)}
+.result-stat-num.red{color:var(--red)}
+.result-msg{background:var(--g6);border-radius:12px;padding:14px 16px;font-size:13px;
+  color:var(--g2);line-height:1.6;margin-bottom:24px;text-align:left}
+.open-q-notice{background:rgba(255,149,0,.08);border:1px solid rgba(255,149,0,.3);border-radius:12px;
+  padding:14px 16px;font-size:13px;color:#a05a00;line-height:1.6;margin-bottom:16px;text-align:left}
+.open-q-notice strong{display:block;margin-bottom:4px;font-size:12px;text-transform:uppercase;
+  letter-spacing:.05em;color:var(--orange)}
+.result-actions{display:flex;flex-direction:column;gap:10px}
+.result-btn{width:100%;padding:14px;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;
+  font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+.result-btn.primary{background:var(--blue);color:var(--white)}
+.result-btn.primary.admin-col{background:var(--purple)}
+.result-btn.ghost{background:var(--g6);color:var(--g2);border:.5px solid var(--g5)}
+.result-btn:hover{opacity:.88}
+
+.hidden{display:none!important}
+.fade-in{animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── OPEN QUESTION GRADING ── */
+.og-wrap{max-width:700px;margin:0 auto}
+.og-header-card{background:var(--white);border-radius:20px;border:1.5px solid var(--g5);
+  padding:24px 26px 20px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.og-eyebrow{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
+.og-eyebrow.tutor{color:var(--blue)}
+.og-eyebrow.admin{color:var(--purple)}
+.og-header-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--black);margin-bottom:6px;line-height:1.2}
+.og-header-sub{font-size:13px;color:var(--g3);line-height:1.6;margin-bottom:14px}
+.og-mc-pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;
+  color:var(--g2);background:var(--g6);border:1px solid var(--g5);border-radius:20px;padding:5px 12px}
+.og-card{background:var(--white);border-radius:20px;
+  box-shadow:0 1px 3px rgba(0,0,0,.05),0 6px 22px rgba(0,0,0,.06);
+  overflow:hidden;margin-bottom:14px;border:2px solid var(--g5);transition:border-color .25s,box-shadow .25s}
+.og-card.graded-correct{border-color:var(--green);box-shadow:0 1px 3px rgba(0,0,0,.05),0 6px 22px rgba(52,199,89,.12)}
+.og-card.graded-wrong{border-color:var(--red);box-shadow:0 1px 3px rgba(0,0,0,.05),0 6px 22px rgba(255,59,48,.1)}
+.og-card-top{padding:14px 20px 12px;border-bottom:.5px solid var(--g5);
+  display:flex;align-items:center;justify-content:space-between;gap:12px}
+.og-card-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:20px}
+.og-card-tag.tutor{background:var(--blu-lt);color:var(--blue)}
+.og-card-tag.admin{background:var(--pur-lt);color:var(--purple)}
+.og-card-num{font-size:12px;font-weight:600;color:var(--g4)}
+.og-q{padding:18px 20px 12px;font-size:15px;font-weight:500;color:var(--g1);line-height:1.65;white-space:pre-wrap}
+.og-answer{margin:0 16px 10px;border-radius:14px;border:1.5px solid var(--g5);background:var(--g6);overflow:hidden}
+.og-answer-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--g4);padding:10px 14px 5px}
+.og-answer-body{font-size:14px;color:var(--g1);line-height:1.65;padding:2px 14px 12px;white-space:pre-wrap}
+.og-answer-empty{font-size:14px;color:var(--g4);font-style:italic;padding:2px 14px 12px}
+.og-ref{margin:0 16px 14px;border-radius:14px;border:1px solid rgba(52,199,89,.3);
+  background:rgba(52,199,89,.06);overflow:hidden}
+.og-ref-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--green);padding:10px 14px 5px}
+.og-ref-body{font-size:13px;color:var(--g1);line-height:1.65;padding:2px 14px 12px;white-space:pre-wrap}
+.og-grade-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 16px 18px}
+.og-grade-btn{padding:15px 10px;border-radius:14px;font-family:'DM Sans',sans-serif;
+  font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  border:2px solid var(--g5);background:var(--white);color:var(--g3);outline:none}
+.og-grade-btn:hover{transform:translateY(-2px)}
+.og-grade-btn.correct:not(.picked):hover{border-color:var(--green);color:var(--green);
+  background:rgba(52,199,89,.07);box-shadow:0 4px 16px rgba(52,199,89,.15)}
+.og-grade-btn.wrong:not(.picked):hover{border-color:var(--red);color:var(--red);
+  background:rgba(255,59,48,.07);box-shadow:0 4px 14px rgba(255,59,48,.12)}
+.og-grade-btn.correct.picked{border-color:var(--green);color:#fff;
+  background:var(--green);box-shadow:0 4px 18px rgba(52,199,89,.4);transform:translateY(-1px)}
+.og-grade-btn.wrong.picked{border-color:var(--red);color:#fff;
+  background:var(--red);box-shadow:0 4px 16px rgba(255,59,48,.35);transform:translateY(-1px)}
+.og-score-panel{background:var(--white);border-radius:20px;border:1.5px solid var(--g5);
+  padding:26px 24px 22px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,.04);text-align:center}
+.og-score-eyebrow{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--g4);margin-bottom:10px}
+.og-score-big{font-family:'DM Serif Display',serif;font-size:52px;color:var(--black);
+  line-height:1;margin-bottom:3px;transition:all .3s}
+.og-score-denom{font-size:14px;color:var(--g4);font-weight:500;margin-bottom:16px}
+.og-pass-bar{height:5px;border-radius:99px;background:var(--g5);margin:0 auto 18px;max-width:260px;overflow:hidden}
+.og-pass-fill{height:100%;border-radius:99px;transition:width .5s ease,background .3s}
+.og-verdict-pill{display:inline-flex;align-items:center;gap:7px;padding:9px 22px;
+  border-radius:99px;font-size:14px;font-weight:700;letter-spacing:.01em}
+.og-verdict-pill.pass{background:rgba(52,199,89,.12);color:var(--green);border:1.5px solid rgba(52,199,89,.3)}
+.og-verdict-pill.fail{background:rgba(255,59,48,.08);color:var(--red);border:1.5px solid rgba(255,59,48,.25)}
+.og-verdict-pill.pending{background:var(--g6);color:var(--g4);border:1.5px solid var(--g5)}
+.og-actions{display:flex;gap:12px;max-width:400px;margin:0 auto}
+.og-actions .quiz-nav-btn{flex:1;padding:13px 10px}
+</style>
+</head>
+<body>
+
+<!-- ══ SCREEN: LANDING ══ -->
+<div id="screen-landing" class="screen active">
+  <div class="top-bar">
+    <div class="top-bar-brand"><span class="bk">Seve</span><span class="bb">n</span><span class="bk">ine</span></div>
+    <span class="doc-badge">Staff Certification Portal</span>
+  </div>
+  <div class="main">
+    <div class="landing-hero fade-in">
+      <div class="landing-eyebrow">Onboarding · Sevenine English School</div>
+      <h1 class="landing-title">Select your position to begin</h1>
+      <p class="landing-sub">Train on SOP material, then take the official certification test to become eligible to start work.</p>
+    </div>
+    <div class="role-grid fade-in">
+      <div class="role-card tutor" onclick="selectRole('tutor')">
+        <div class="role-icon">🎓</div>
+        <div class="role-name">Tutor</div>
+        <p class="role-desc">Academic department staff responsible for delivering lessons and maintaining educational standards.</p>
+        <span class="role-badge">English</span>
+        <span class="role-arrow">→</span>
+      </div>
+      <div class="role-card admin" onclick="selectRole('admin')">
+        <div class="role-icon">🗂️</div>
+        <div class="role-name">Administrator</div>
+        <p class="role-desc">Administration department staff managing client relations, enrollment, scheduling and operations.</p>
+        <span class="role-badge">Русский</span>
+        <span class="role-arrow">→</span>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="footer-brand"><span class="bk">Seve</span><span class="bb">n</span><span class="bk">ine</span></div>
+    <span class="footer-meta">@sevenineuz · English School · Tashkent</span>
+  </div>
+</div>
+
+<!-- ══ SCREEN: HUB ══ -->
+<div id="screen-hub" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-brand"><span class="bk">Seve</span><span class="bb">n</span><span class="bk">ine</span></div>
+    <div class="top-bar-right">
+      <span id="hub-badge" class="doc-badge">Tutor Track</span>
+      <button class="back-btn" onclick="goTo('landing')">← Back</button>
+    </div>
+  </div>
+  <div class="main">
+    <div class="hub-header fade-in">
+      <div id="hub-icon" class="hub-icon tutor">🎓</div>
+      <div>
+        <div id="hub-title" class="hub-title">Tutor Certification Track</div>
+        <div id="hub-sub" class="hub-sub">Train on SOP material, then take the official test</div>
+      </div>
+    </div>
+    <div class="hub-cards fade-in">
+      <div class="hub-card training" onclick="goTo('quiz-select')">
+        <div class="hub-card-icon">📚</div>
+        <div class="hub-card-title" id="hub-train-title">Training Mode</div>
+        <p class="hub-card-desc" id="hub-train-desc">10 topic-based quizzes. Instant feedback after each answer. Unlimited attempts — no password needed.</p>
+        <div class="hub-card-meta" id="hub-train-meta">No password · 10 quizzes · Free practice</div>
+      </div>
+      <div id="hub-cert-card" class="hub-card cert tutor" onclick="goToPassword()">
+        <div class="hub-card-icon">📋</div>
+        <div class="hub-card-title" id="hub-cert-title">Certification Test</div>
+        <p class="hub-card-desc" id="hub-cert-desc">The official SOP test. Password required. Timed and scored. 95% to pass (45/47).</p>
+        <div class="hub-card-meta" id="hub-cert-meta">Password required · 30 min · Official</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="footer-brand"><span class="bk">Seve</span><span class="bb">n</span><span class="bk">ine</span></div>
+    <span class="footer-meta">@sevenineuz · English School · Tashkent</span>
+  </div>
+</div>
+
+<!-- ══ SCREEN: QUIZ SELECT (Training) ══ -->
+<div id="screen-quiz-select" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-brand"><span class="bk">Seve</span><span class="bb">n</span><span class="bk">ine</span></div>
+    <div class="top-bar-right">
+      <span id="qs-badge" class="doc-badge">Training Mode</span>
+      <button class="back-btn" onclick="goTo('hub')">← Back</button>
+    </div>
+  </div>
+  <div class="main">
+    <div class="quiz-selector fade-in">
+      <div class="quiz-selector-title" id="qs-title">Choose a Training Quiz</div>
+      <div class="quiz-selector-sub" id="qs-sub">Each quiz covers a specific SOP topic — 10 questions each</div>
+      <div class="quiz-grid" id="quiz-grid"></div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="footer-brand"><span class="bk">Seve</span><span class="bb">n</span><span class="bk">ine</span></div>
+    <span class="footer-meta">@sevenineuz · English School · Tashkent</span>
+  </div>
+</div>
+
+<!-- ══ SCREEN: PASSWORD ══ -->
+<div id="screen-password" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-brand"><span class="bk">Seve</span><span class="bb">n</span><span class="bk">ine</span></div>
+    <div class="top-bar-right">
+      <button class="back-btn" onclick="goTo('hub')">← Back</button>
+    </div>
+  </div>
+  <div class="main" style="display:flex;align-items:center;justify-content:center">
+    <div class="pw-shell fade-in">
+      <div id="pw-accent" class="pw-accent tutor"></div>
+      <div class="pw-body">
+        <div class="pw-lock">🔒</div>
+        <div class="pw-title" id="pw-title">Authorisation Required</div>
+        <p class="pw-sub" id="pw-sub">Enter the password provided by your manager to unlock the official test.</p>
+        <div id="pw-lockout" class="pw-lockout"></div>
+        <div id="pw-error" class="pw-error"></div>
+        <div class="pw-input-wrap">
+          <input type="password" class="pw-input" id="pw-input" placeholder="Enter password"
+            onkeydown="if(event.key==='Enter')checkPassword()">
+          <span class="pw-toggle" onclick="togglePw()">👁</span>
+        </div>
+        <button id="pw-btn" class="pw-btn tutor" onclick="checkPassword()">Unlock Test</button>
+        <div class="pw-attempts" id="pw-attempts">3 attempts remaining</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="footer-brand"><span class="bk">Seve</span><span class="bb">n</span><span class="bk">ine</span></div>
+    <span class="footer-meta">@sevenineuz · English School · Tashkent</span>
+  </div>
+</div>
+
+<!-- ══ SCREEN: QUIZ ══ -->
+<div id="screen-quiz" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-brand"><span class="bk">Seve</span><span class="bb">n</span><span class="bk">ine</span></div>
+    <div class="top-bar-right">
+      <span id="quiz-badge" class="doc-badge">Quiz</span>
+      <button class="back-btn" onclick="confirmQuit()">✕ Quit</button>
+    </div>
+  </div>
+  <div class="main">
+    <div class="quiz-wrap fade-in">
+      <div id="training-score-strip" class="training-score-bar hidden">
+        <span class="training-score-label" id="train-score-label">Score so far</span>
+        <span class="training-score-val" id="train-score-val">0 / 0</span>
+      </div>
+      <div class="quiz-meta-bar">
+        <span class="quiz-progress-label" id="quiz-q-label">Question 1 of 10</span>
+        <div class="quiz-progress-bar-wrap">
+          <div class="quiz-progress-fill tutor" id="quiz-prog-fill" style="width:0%"></div>
+        </div>
+        <div class="quiz-timer hidden" id="quiz-timer-box">⏱ <span id="quiz-timer">30:00</span></div>
+      </div>
+      <div class="quiz-card" id="quiz-card">
+        <div class="quiz-card-header">
+          <span class="quiz-module-tag tutor" id="quiz-module-tag">Module</span>
+          <span class="quiz-q-num" id="quiz-q-num">Q1</span>
+        </div>
+        <div class="quiz-q-text" id="quiz-q-text"></div>
+        <div id="multi-note-wrap"></div>
+        <div id="quiz-options-wrap"></div>
+        <div class="quiz-feedback" id="quiz-feedback"></div>
+        <div class="quiz-nav">
+          <div></div>
+          <button class="quiz-nav-btn primary" id="quiz-next-btn" onclick="handleNext()" disabled>Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="footer-brand"><span class="bk">Seve</span><span class="bb">n</span><span class="bk">ine</span></div>
+    <span class="footer-meta">@sevenineuz · English School · Tashkent</span>
+  </div>
+</div>
+
+<!-- ══ SCREEN: RESULT ══ -->
+<div id="screen-result" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-brand"><span class="bk">Seve</span><span class="bb">n</span><span class="bk">ine</span></div>
+    <span id="result-badge" class="doc-badge">Result</span>
+  </div>
+  <div class="main" style="display:flex;align-items:center;justify-content:center">
+    <div class="result-shell fade-in">
+      <div class="result-accent" id="result-accent"></div>
+      <div class="result-body">
+        <div class="result-stamp" id="result-stamp">✅</div>
+        <div class="result-verdict" id="result-verdict">Certified</div>
+        <p class="result-sub" id="result-sub"></p>
+        <div class="result-score-ring" id="result-ring"></div>
+        <div class="result-stats">
+          <div class="result-stat"><div class="result-stat-num green" id="res-correct">—</div><div class="result-stat-lbl" id="res-correct-lbl">Correct</div></div>
+          <div class="result-stat"><div class="result-stat-num red" id="res-wrong">—</div><div class="result-stat-lbl" id="res-wrong-lbl">Wrong</div></div>
+          <div class="result-stat"><div class="result-stat-num" id="res-total">—</div><div class="result-stat-lbl" id="res-total-lbl">Total</div></div>
+        </div>
+        <div id="open-q-notice" class="open-q-notice hidden"></div>
+        <div class="result-msg" id="result-msg"></div>
+        <div class="result-actions" id="result-actions"></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="footer-brand"><span class="bk">Seve</span><span class="bb">n</span><span class="bk">ine</span></div>
+    <span class="footer-meta">@sevenineuz · English School · Tashkent</span>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════
+//  PASSWORDS (SHA-256)
+//  Tutor2026 → 8d91ec7b…  Admin2026 → 059a50ce…
+// ════════════════════════════════════════
+const HASHES = {
+  tutor:'8d91ec7b8a3aa9ed9f50e40aac42a97a14202dbe965aae07da55f5932265ee3b',
+  admin:'059a50ce956b7ec61527c7ecc0c55b5a009dc54ab4acddce8852b46baa2aba30'
+};
+
+// ════════════════════════════════════════
+//  OFFICIAL CERT QUESTIONS
+// ════════════════════════════════════════
+// q.type: 'mc'=single, 'multi'=multi-select, 'open'=open-ended, 'calc'=calculation
+// answer: index (mc/calc), array of indices (multi), string (open ref answer)
+
+const TUTOR_CERT = [
+  // MODULE 1
+  {mod:'Module 1 — Lesson Discipline & CRM',type:'mc',
+   q:'You accidentally turned off the projector. What is the correct action?',
+   opts:['Turn it back on immediately','Wait at least one minute before turning it back on','Ask admin to restart it','Leave it off until next lesson'],ans:1},
+  {mod:'Module 1 — Lesson Discipline & CRM',type:'mc',
+   q:'Why must you always turn off the projector after class?',
+   opts:['To reduce electricity costs','To prevent students touching it','Because the projector lamp has a limited lifetime','Because admin monitors power usage'],ans:2},
+  {mod:'Module 1 — Lesson Discipline & CRM',type:'mc',
+   q:'What does "1CP14:00 Standard" mean?',
+   opts:['Even days, Cooper Station, 14:00, Standard','Odd days, Central Perk, 14:00, Standard','Odd days, Silicon Valley, 14:00, Standard','Even days, Central Perk, 14:00, Standard'],ans:1},
+  {mod:'Module 1 — Lesson Discipline & CRM',type:'mc',
+   q:'In which cases must a group name be updated?',
+   opts:['Only when the tariff changes','When day, time, level, tariff or room changes','Only at the end of the month','Only when admin reminds'],ans:1},
+  {mod:'Module 1 — Lesson Discipline & CRM',type:'mc',
+   q:'Where must the updated group name appear?',
+   opts:['Only in CRM','Only in Telegram','In CRM and in the group Telegram chat','Only in the teacher\'s notes'],ans:2},
+  {mod:'Module 1 — Lesson Discipline & CRM',type:'mc',
+   q:'When must the group name be updated?',
+   opts:['Within the same day','Before the next lesson','Immediately when the change occurs','After director approval'],ans:2},
+  {mod:'Module 1 — Lesson Discipline & CRM',type:'multi',
+   q:'Why is setting the lesson theme in CRM important?',
+   opts:['It affects salary calculation','Admin can understand the group\'s progress','Substitute tutors know what topic to teach','It is required for certificate printing'],ans:[1,2]},
+  {mod:'Module 1 — Lesson Discipline & CRM',type:'mc',
+   q:'How do you correctly set a lesson theme?',
+   opts:['Write it in the Telegram group','CRM → Group → Date → Set lesson topic','Send a message to admin','Write on the whiteboard'],ans:1},
+  {mod:'Module 1 — Lesson Discipline & CRM',type:'mc',
+   q:'When must attendance be marked?',
+   opts:['At the end of the lesson','Within the first 2–3 minutes','During the break','At any time before midnight'],ans:1},
+  {mod:'Module 1 — Lesson Discipline & CRM',type:'mc',
+   q:'A student is absent twice in a row. What is the correct action?',
+   opts:['Continue observing','Wait until the third absence','Inform the admin immediately','Text the student in the group'],ans:2},
+  {mod:'Module 1 — Lesson Discipline & CRM',type:'mc',
+   q:'Marking a student as present when they are absent is:',
+   opts:['Acceptable if done accidentally','A minor technical issue','A serious violation','Only a problem if repeated'],ans:2},
+  {mod:'Module 1 — Lesson Discipline & CRM',type:'mc',
+   q:'Homework must be assigned in:',
+   opts:['The whiteboard only','Telegram chat','CRM','Students\' notebooks'],ans:2},
+  // MODULE 2
+  {mod:'Module 2 — Classroom Behaviour',type:'mc',
+   q:'A student arrives 10 minutes late. Which reaction follows Sevenine standards?',
+   opts:['Smile warmly and repeat everything','Ignore the student completely','Greet neutrally without interrupting the flow of the lesson','Make a joke about being late'],ans:2},
+  {mod:'Module 2 — Classroom Behaviour',type:'mc',
+   q:'What must be done if lateness becomes regular?',
+   opts:['Warn the student publicly','Ask the admin to contact the parents','Ignore to avoid conflict','Reduce the student\'s homework'],ans:1},
+  {mod:'Module 2 — Classroom Behaviour',type:'mc',
+   q:'A student attends a regular lesson and hasn\'t purchased books. What is the correct action?',
+   opts:['Print the pages to save time','Lend your personal copy','Politely instruct them to purchase the books at reception','Skip the lesson'],ans:2},
+  {mod:'Module 2 — Classroom Behaviour',type:'mc',
+   q:'Which correction style is prohibited?',
+   opts:['"Good idea — one small correction."','"Almost correct, try again."','"You always make this mistake."','"Nice vocabulary choice."'],ans:2},
+  {mod:'Module 2 — Classroom Behaviour',type:'mc',
+   q:'A student makes a mistake while speaking. What should happen first?',
+   opts:['Give the correct answer immediately','Encourage the student to self-correct','Ignore the mistake','Explain what went wrong'],ans:1},
+  {mod:'Module 2 — Classroom Behaviour',type:'mc',
+   q:'Which scenario violates Sevenine preparation standards?',
+   opts:['Reviewing the Teacher\'s Guide and planning the lesson in advance','Entering the class without preparation and deciding activities spontaneously','Adjusting lesson pace while following the plan','Assigning minor exercises as homework'],ans:1},
+  // MODULE 3
+  {mod:'Module 3 — Testing & Certification',type:'mc',
+   q:'Mid Test score = 58/80. Result?',
+   opts:['Fail','Pass','Retake','Speaking decides'],ans:1},
+  {mod:'Module 3 — Testing & Certification',type:'mc',
+   q:'Final Test = 83/120, Speaking = 7/10. Result?',
+   opts:['Pass — speaking compensates','Fail — certificate issued anyway','The student may retake the written test to reach the ≥84 threshold','Retake speaking only — written is ignored'],ans:2},
+  {mod:'Module 3 — Testing & Certification',type:'mc',
+   q:'Final Test = 84/120, Speaking = 6/10. Result?',
+   opts:['Pass','Retake speaking only','Fail without retake','Retake final only'],ans:1},
+  {mod:'Module 3 — Testing & Certification',type:'mc',
+   q:'Which condition is mandatory to pass the Final Test?',
+   opts:['Final ≥84','Speaking ≥7','Final ≥84 AND Speaking ≥7','Either one is enough'],ans:2},
+  {mod:'Module 3 — Testing & Certification',type:'mc',
+   q:'A student fails the speaking part. What is allowed?',
+   opts:['No second attempt','One speaking retake','Certificate anyway','Ignore speaking'],ans:1},
+  {mod:'Module 3 — Testing & Certification',type:'mc',
+   q:'How must the writing section be handled?',
+   opts:['Administered separately with 20 minutes time limit','Included in the fully printed test','Optional'],ans:1},
+  {mod:'Module 3 — Testing & Certification',type:'mc',
+   q:'How is the official test duration applied?',
+   opts:['Only to listening and reading','Writing has separate limited time','The full duration includes the writing section','Duration is flexible'],ans:2},
+  {mod:'Module 3 — Testing & Certification',type:'mc',
+   q:'Which section must always be first?',
+   opts:['Reading','Writing','Listening','Tutor decides'],ans:2},
+  {mod:'Module 3 — Testing & Certification',type:'mc',
+   q:'Before giving any test, what must the tutor do regarding timing?',
+   opts:['Use the same timing for all levels','Ask admin personally about the timing','Check the test page of the corresponding level in Notion','Decide based on class length'],ans:2},
+  {mod:'Module 3 — Testing & Certification',type:'mc',
+   q:'Where exactly can the tutor find the correct timing?',
+   opts:['From admin or director','Student Handbook','Test page of the corresponding level in Notion','CRM group chat'],ans:2},
+  {mod:'Module 3 — Testing & Certification',type:'mc',
+   q:'Which statement about the Final Test retake is true?',
+   opts:['It is the same test document — repeated identically','The tutor creates a custom version based on weak areas','It uses the dedicated retake test document found at the end of the Final Test page in Notion','Admin prepares a new version for each retake'],ans:2},
+  {mod:'Module 3 — Testing & Certification',type:'mc',
+   q:'Where is the retake test document located?',
+   opts:['Admin prepares and sends it before each retake','In the Mid Test folder in Notion','At the end of the Final Test page of the designated level in Notion','The tutor generates it from the previous test'],ans:2},
+  {mod:'Module 3 — Testing & Certification',type:'mc',
+   q:'Which practice is a serious violation?',
+   opts:['Using the official retake file','Checking timing before the test','Giving students the same Final Test again','Starting the test with listening'],ans:2},
+  {mod:'Module 3 — Testing & Certification',type:'calc',
+   q:'A student scored 87 points out of 120 on the Final Test.\n\nConvert this result into a percentage (e.g. write "72.5"):',
+   opts:['72.5%','70%','72%','75%'],ans:0,
+   hint:'87 ÷ 120 × 100 = 72.5%'},
+  // MODULE 4
+  {mod:'Module 4 — Speaking Programme & CPT',type:'mc',
+   q:'Teaching Navigate without using the Classroom Presentation Tool is:',
+   opts:['Acceptable if the tutor is experienced','Optional in small groups','A violation of Sevenine standards','Allowed when the projector is busy'],ans:2},
+  {mod:'Module 4 — Speaking Programme & CPT',type:'mc',
+   q:'Why must tutors use the official Oxford Teacher\'s Guide?',
+   opts:['For administrative reporting','To follow a structured interactive teaching methodology','Only beginners must use it','To impress students'],ans:1},
+  {mod:'Module 4 — Speaking Programme & CPT',type:'mc',
+   q:'Which responsibility regarding student resources is correct?',
+   opts:['Students search for all audios and links themselves','Tutors must share the Navigate resource links from the level page','Only admins are responsible for resources','Links are shared only during exam week'],ans:1},
+  {mod:'Module 4 — Speaking Programme & CPT',type:'mc',
+   q:'What best describes the main aim of the Complementary Speaking Programme?',
+   opts:['Practicing random conversation without structure','Developing fluency, confidence and topic-based vocabulary aligned with Navigate units','Replacing the Navigate coursebook','Entertaining students during long lessons'],ans:1},
+  {mod:'Module 4 — Speaking Programme & CPT',type:'mc',
+   q:'Which method correctly teaches speaking vocabulary?',
+   opts:['Translating each phrase word-for-word','Demonstrating how vocabulary is used inside real answers','Asking students to memorize silently','Skipping examples to save time'],ans:1},
+  {mod:'Module 4 — Speaking Programme & CPT',type:'mc',
+   q:'By when must students be ready with their prepared speaking answers?',
+   opts:['Any time before the final exam','By the last subunit of the same Navigate unit','When starting a new unit','By the second subunit of the same Navigate unit'],ans:1},
+  {mod:'Module 4 — Speaking Programme & CPT',type:'mc',
+   q:'How long should teaching one Speaking Programme unit normally take?',
+   opts:['10 minutes','20 minutes','Maximum 40 minutes, preferably less than 30 minutes','Maximum 60 minutes'],ans:2},
+  {mod:'Module 4 — Speaking Programme & CPT',type:'mc',
+   q:'How should speaking be checked in large groups?',
+   opts:['Ask all questions to everyone','Ask 2 random questions per student','Only strong students answer','Skip weak students'],ans:1},
+  {mod:'Module 4 — Speaking Programme & CPT',type:'mc',
+   q:'A student fails the Final Speaking Test. What happens?',
+   opts:['Certificate is still issued','Unlimited retakes are allowed','The student gets one retake opportunity after preparation','Repeat the level'],ans:2},
+  // MODULE 5
+  {mod:'Module 5 — Sevenine Shop',type:'mc',
+   q:'A student arrives 1 minute late but performs perfectly afterwards. What must the tutor do?',
+   opts:['Award 1–5 coins','Award 6–20 coins','Do not award any coins','Award coins only if homework was perfect'],ans:2},
+  {mod:'Module 5 — Sevenine Shop',type:'mc',
+   q:'A student has a negative balance (red dot) in CRM. What is allowed?',
+   opts:['Award coins but they cannot redeem','Award only 1–5 coins','Do not award any coins at all','Award coins after parent confirmation'],ans:2},
+  {mod:'Module 5 — Sevenine Shop',type:'mc',
+   q:'What best describes 1–5 coins?',
+   opts:['For satisfying performance','For flawless homework, strong understanding and active participation','For arriving on time only','For exam results'],ans:1},
+  {mod:'Module 5 — Sevenine Shop',type:'mc',
+   q:'When can a tutor award 6–20 coins?',
+   opts:['For any good homework','For performance that significantly stands out and is exceptional','Only after mid-test','Only for IELTS students'],ans:1},
+  {mod:'Module 5 — Sevenine Shop',type:'mc',
+   q:'A student arrives 12 minutes late. Can they earn any coins?',
+   opts:['Yes, max 5','Yes, if homework was perfect','No, they cannot earn any coins','Only mid-test coins allowed'],ans:2},
+  {mod:'Module 5 — Sevenine Shop',type:'mc',
+   q:'In today\'s lesson: Student A — 8 coins, Student B — 7 coins, Student C — 5 coins. Student D now shows exceptional performance. What must the tutor do?',
+   opts:['Give 6 coins','Give 4 coins','Give 5 coins','Do not give any coins'],ans:3},
+];
+
+const ADMIN_CERT = [
+  {mod:'Блок 1 — Философия Sevenine',type:'mc',
+   q:'Что является фундаментом стабильного результата студентов в Sevenine?',
+   opts:['Университетская программа Oxford','Личное мастерство отдельных преподавателей','Единая методическая система и стандарты','Интенсивность занятий','Формат уроков'],ans:2},
+  {mod:'Блок 1 — Философия Sevenine',type:'mc',
+   q:'Ограничение групп до 8 человек необходимо для:',
+   opts:['Оптимизации расписания','Контроля дисциплины','Повышения вовлечённости и диалогового формата обучения','Удобства администрирования','Упрощения методики преподавания'],ans:2},
+  {mod:'Блок 1 — Философия Sevenine',type:'mc',
+   q:'Что является ключевым продуктом Sevenine?',
+   opts:['Курсы','Преподаватели','Образовательная среда','Результат обучения','Программа Oxford'],ans:3},
+  {mod:'Блок 1 — Философия Sevenine',type:'mc',
+   q:'Минимальный базовый фильтр при отборе преподавателей:',
+   opts:['Опыт работы','Методическая подготовка','IELTS 7.5','Педагогическое образование','Рекомендации'],ans:2},
+  {mod:'Блок 2 — Уровни и программы',type:'mc',
+   q:'Структура General English включает:',
+   opts:['4 уровня','5 уровней','6 уровней','3 уровня'],ans:1},
+  {mod:'Блок 2 — Уровни и программы',type:'mc',
+   q:'Корректная логика уровней:',
+   opts:['Beginner → Elementary → Pre → Intermediate → Upper','Beginner → Elementary → Pre-Intermediate → Intermediate → Upper-Intermediate','Elementary → Beginner → Pre → Intermediate → Upper','Beginner → Pre → Elementary → Upper → Intermediate'],ans:1},
+  {mod:'Блок 2 — Уровни и программы',type:'mc',
+   q:'Базовый уровень допуска на IELTS:',
+   opts:['Pre-Intermediate','Intermediate','Upper-Intermediate','Advanced'],ans:2},
+  {mod:'Блок 2 — Уровни и программы',type:'mc',
+   q:'Переход на IELTS после Intermediate возможен при условии:',
+   opts:['Высокой мотивации','Сильной грамматики','Ограниченных сроков и целевого балла 5.0–6.0','Желания студента','Высокого reading'],ans:2},
+  {mod:'Блок 3 — Kids',type:'mc',
+   q:'Kids-программа охватывает возраст:',
+   opts:['5–11','6–12','7–13','6–13'],ans:1},
+  {mod:'Блок 3 — Kids',type:'mc',
+   q:'Условие перехода ребёнка во взрослую программу:',
+   opts:['Желание родителей','Возраст 12+','13+ или успешное окончание Kids Level 4','После Level 2'],ans:2},
+  {mod:'Блок 4 — Тестирование',type:'mc',
+   q:'Ключевой критерий распределения по группам:',
+   opts:['Грамматика','Тест IELTS','Speaking','Reading','Writing'],ans:2},
+  {mod:'Блок 4 — Тестирование',type:'mc',
+   q:'Логика проведения speaking-проверки:',
+   opts:['Сразу сложные вопросы','С любого уровня','Поэтапно, начиная с beginner','По результатам грамматики'],ans:2},
+  {mod:'Блок 5 — IELTS',type:'mc',
+   q:'Фокус курса IELTS:',
+   opts:['Грамматические структуры','Теория языка','4 навыка + экзаменационные техники','Лексические темы','Тестовые задания'],ans:2},
+  {mod:'Блок 5 — IELTS',type:'mc',
+   q:'Средняя продолжительность курса IELTS:',
+   opts:['2 месяца','3–4 месяца','5–6 месяцев','1 год'],ans:1},
+  {mod:'Блок 5 — IELTS',type:'mc',
+   q:'UKVI IELTS отличается от обычного IELTS:',
+   opts:['Форматом заданий','Языком экзамена','Юридическим статусом для виз UK','Структурой экзамена','Уровнем сложности'],ans:2},
+  {mod:'Блок 6 — CRM и процессы',type:'mc',
+   q:'Формат названия группы:',
+   opts:['Комната – День – Время – Тариф','День – Комната – Время – Тариф','Время – День – Комната – Тариф','День – Время – Комната – Тариф'],ans:1},
+  {mod:'Блок 6 — CRM и процессы',type:'mc',
+   q:'Обновление названия группы производится:',
+   opts:['В конце недели','После накопления изменений','Сразу после изменений','По усмотрению администратора'],ans:2},
+  {mod:'Блок 6 — CRM и процессы',type:'mc',
+   q:'Где обязательно вносится новое название группы:',
+   opts:['Только в CRM','Только в Telegram','CRM и Telegram','В отчётах'],ans:2},
+  {mod:'Блок 7 — Оплата',type:'mc',
+   q:'Первый контакт по оплате:',
+   opts:['SMS','Telegram','Звонок','Instagram DM'],ans:2},
+  {mod:'Блок 7 — Оплата',type:'mc',
+   q:'После скольких недозвонов допустимо сообщение в Telegram:',
+   opts:['После одного','После двух','После трёх','Всегда сразу'],ans:1},
+  {mod:'Блок 7 — Оплата',type:'mc',
+   q:'Формат оплаты:',
+   opts:['Частичная','По занятиям','Полная предоплата за 4 недели','Гибкая система'],ans:2},
+  {mod:'Блок 8 — Правила и юридика',type:'mc',
+   q:'Контакты преподавателей студентам:',
+   opts:['Допустимы в экстренных случаях','Допустимы при согласии учителя','Запрещены внутренними правилами','Допустимы в старших группах'],ans:2},
+  {mod:'Блок 8 — Правила и юридика',type:'mc',
+   q:'Юридическая форма отношений со студентом:',
+   opts:['Контракт','Договор','Публичная оферта','Устное соглашение'],ans:2},
+  {mod:'Блок 8 — Правила и юридика',type:'mc',
+   q:'Акцепт публичной оферты:',
+   opts:['Подпись','Оплата','Факт обучения и использования сервисов','Регистрация'],ans:2},
+  {mod:'Блок 9 — Методика',type:'mc',
+   q:'Что в контексте Sevenine означает "метод Сократа"?',
+   opts:['Обучение через объяснение теории и правил','Обучение через заучивание примеров и диалогов','Обучение через вопросы, диалог и мышление студента','Обучение через лекционный формат','Обучение через самостоятельное чтение'],ans:2},
+  {mod:'Блок 10 — Общение с клиентом',type:'mc',
+   q:'Клиент позвонил или пришёл в центр. По какой структуре должен выстраиваться диалог?',
+   opts:['Приветствие → Презентация курсов → Стоимость → Запись','Приветствие → Определение уровня → Предложение курса → Оплата','Знакомство → Выявление потребности → Презентация → Ответы на вопросы → Тестирование/демо-урок','Приветствие → Рассказ о школе → Расписание → Стоимость','Приветствие → Презентация → Тест → Запись в группу'],ans:2},
+  {mod:'Блок 11 — Ситуационный диалог',type:'mc',
+   q:'Выберите вариант диалога, который полностью соответствует SOP Sevenine.',
+   opts:['Вариант A: Администратор сразу называет стоимость 890 000 сум','Вариант B: Знакомство → выявление потребности → презентация → цена → демо-урок ✅','Вариант C: Стоимость сразу без вопросов','Вариант D: Предлагает написать в Telegram','Вариант E: Называет стоимость по тарифу сразу'],ans:1},
+  // Open-ended questions
+  {mod:'Блок 12 — Ситуационные кейсы',type:'open',
+   q:'Студент 12 лет, Kids Level 2. Родители требуют перевод во взрослую группу.\n\n➡ Ваше решение и аргументация.',
+   refAnswer:'Отказ. Не выполнены условия: возраст менее 13 лет, Kids Level 4 не окончен. Переход во взрослую программу возможен только при достижении 13+ или успешном окончании Kids Level 4.'},
+  {mod:'Блок 12 — Ситуационные кейсы',type:'open',
+   q:'Грамматика высокая, speaking слабый.\n\n➡ Как определяется уровень и почему?',
+   refAnswer:'Уровень определяется по speaking. Speaking является ключевым критерием распределения по группам, так как именно он отражает реальный коммуникативный уровень студента.'},
+  {mod:'Блок 12 — Ситуационные кейсы',type:'open',
+   q:'Студент хочет IELTS 7.0, уровень Intermediate.\n\n➡ Ваше решение.',
+   refAnswer:'IELTS невозможен с текущим уровнем. Для целевого балла 7.0 необходим Upper-Intermediate. Рекомендуется сначала завершить Upper-Intermediate, затем переходить на IELTS.'},
+  {mod:'Блок 12 — Ситуационные кейсы',type:'open',
+   q:'Группа заканчивает Upper-Intermediate через 10 дней.\n\n➡ Действия администратора.',
+   refAnswer:'Подготовка перехода: определить преподавателя, кабинет, расписание; уведомить студентов; обновить CRM и Telegram; обеспечить непрерывность обучения без перерыва.'},
+  {mod:'Блок 12 — Ситуационные кейсы',type:'open',
+   q:'Преподаватель не пришёл за 10 минут до урока.\n\n➡ Алгоритм действий.',
+   refAnswer:'Связаться с преподавателем, урегулировать ситуацию, обеспечить старт урока, организовать замену при необходимости, зафиксировать инцидент, сообщить руководству.'},
+  {mod:'Блок 13 — CRM-практика',type:'open',
+   q:'Заполните комментарий лида:\n\nСтудент 20 лет, уровень неизвестен, чётные дни 14:00–17:00, тариф Standard, цель — speaking.\n\n*(строгий формат)*',
+   refAnswer:'20 / ? / чет 14:00–17:00 / Standard / speaking'},
+  {mod:'Блок 14 — Ценности и позиционирование',type:'open',
+   q:'Клиент звонит и сразу спрашивает стоимость курса. Опишите, как должен строиться диалог администратора согласно СОП — от приветствия до конкретного предложения.',
+   refAnswer:'Приветствие → уточнить имя → представиться → выяснить потребность (для кого, с какой целью) → презентация подходящего курса → ответы на вопросы → предложить тестирование или демо-урок. Стоимость называется после выявления потребности и презентации ценности.'},
+  // Блок 15
+  {mod:'Блок 15 — Запуск новых групп',type:'mc',
+   q:'Когда происходит старт новой группы?',
+   opts:['1–3 числа','5–7 числа','8–10 числа','15-17 числа','В конце месяца'],ans:2},
+  {mod:'Блок 15 — Запуск новых групп',type:'mc',
+   q:'Что означает "*" в конце имени лида в разделе «Набор»?',
+   opts:['Клиент прошёл тестирование','Клиент подтвердил участие устно','Аккаунт создан, оплата подтверждена','Клиент записан на демо','Клиент в ожидании группы'],ans:2},
+  {mod:'Блок 15 — Запуск новых групп',type:'mc',
+   q:'При каком условии группа гарантированно запускается?',
+   opts:['Есть минимум 2 подтверждения','Есть 3 заявки','Набрано 4 подтверждённых студента до 6 числа','Назначен преподаватель','Есть свободный кабинет'],ans:2},
+  {mod:'Блок 15 — Запуск новых групп',type:'mc',
+   q:'Группа не набрала достаточное количество студентов к 6 числу. Что происходит?',
+   opts:['Группа запускается с меньшим числом','Старт переносится на следующий месяц, студенты уведомляются','Директор принимает решение индивидуально','Студенты переводятся в другие группы','Запускается онлайн-формат'],ans:1},
+  {mod:'Блок 15 — Запуск новых групп',type:'mc',
+   q:'Новый студент добавляется в существующую группу. Его начальный статус в системе:',
+   opts:['Полноправный участник','DEMO','Временный','Платный пробный','Ожидающий подтверждения'],ans:1},
+];
+
+// ════════════════════════════════════════
+//  TRAINING QUIZ BANKS (10 quizzes × 10 questions)
+//  All questions sourced from Notion SOPs —
+//  deliberately different from official cert test questions
+// ════════════════════════════════════════
+const TUTOR_TRAINING_QUIZZES = [
+  {name:'Professional Standards & Conduct',topic:'Admin & Conduct SOP',qs:[
+    {mod:'Professional Standards',type:'mc',q:'Before leaving the classroom, what must the tutor ask students to do?',opts:['Pack their bags quickly','Sit quietly until admin arrives','Push chairs under the tables so the room is neat for the next session','Stack books on the teacher\'s desk'],ans:2,exp:'Per Administrative and Professional Standards SOP: tutors must ask students to push chairs under the tables before leaving so the classroom is ready for the next tutor.'},
+    {mod:'Professional Standards',type:'mc',q:'During a lesson, a tutor\'s personal phone rings. According to SOP, this is:',opts:['Fine if it is a short call','Acceptable during breaks','Strictly prohibited — phones may only be used for teaching purposes','Allowed if on silent mode'],ans:2,exp:'The SOP states: only use mobile phones, laptops, or tablets for teaching purposes during lessons. Personal use is strictly prohibited.'},
+    {mod:'Professional Standards',type:'mc',q:'A student hasn\'t done their homework. The SOP-compliant tutor response is:',opts:['Raise your voice to set an example','Address it calmly — never shout or be aggressive','Send the student out','Deduct coins immediately and move on'],ans:1,exp:'The SOP explicitly states: do not get angry, do not shout at students who haven\'t done homework, and never be violent or aggressive.'},
+    {mod:'Professional Standards',type:'mc',q:'Tutor performance assessments at Sevenine are:',opts:['Announced a week in advance','Scheduled at the start of each term','Unannounced','Only conducted at year-end'],ans:2,exp:'Per Teacher Performance Guidelines: assessments are unannounced — tutors are expected to meet standards every single lesson.'},
+    {mod:'Professional Standards',type:'mc',q:'A new student joins for a demo lesson. What is the tutor\'s very first action?',opts:['Start the lesson immediately without interruption','Greet the student, break the ice, and introduce all group members','Ask admin to handle the introduction','Give the student a worksheet to settle in'],ans:1,exp:'Demo Lesson SOP: greet the student, break the ice with the group to reduce shyness, introduce every group member, and have the new student introduce themselves.'},
+    {mod:'Professional Standards',type:'mc',q:'Should a demo student earn coins during the observation lesson?',opts:['Yes — same rules apply','Yes — but only 1–5','No — demo students do not participate in the coin system','Only if they voluntarily participate'],ans:2,exp:'Coins apply to enrolled students. A demo student is an observer, not a full participant in the coin system.'},
+    {mod:'Professional Standards',type:'mc',q:'A tutor finds the projector has been left on from the previous session. Before starting the lesson, what should they do?',opts:['Turn it off and wait 1 minute before turning it back on','Leave it — it was the previous tutor\'s fault','Report to admin immediately','Use it as-is — no need to do anything'],ans:0,exp:'The projector lamp needs a cool-down period if it was recently on. Turn it off, wait at least 1 minute, then turn it back on for your lesson.'},
+    {mod:'Professional Standards',type:'mc',q:'A tutor arrives to find the classroom messy from the previous session. The correct response is:',opts:['Refuse to teach until it is cleaned','Teach and complain to admin afterwards','Quickly tidy up and begin — classrooms must always be ready for each session','Leave it — it is the previous tutor\'s responsibility'],ans:2,exp:'Classrooms must always be neat and ready. It is a shared professional responsibility to maintain the space.'},
+    {mod:'Professional Standards',type:'mc',q:'What attitude toward colleagues does the Administrative Standards SOP require?',opts:['Compete to demonstrate better performance to management','Respect colleagues and maintain a professional working environment','Share all student information freely','Avoid interaction to remain focused'],ans:1,exp:'The SOP explicitly states: respect your colleagues and maintain a professional environment.'},
+    {mod:'Professional Standards',type:'mc',q:'A tutor uses screen sharing during an online lesson to display exercises. This is:',opts:['Prohibited — it distracts students','Required only for IELTS groups','Permitted and encouraged when needed for slides, videos or exercises','Only allowed with director approval'],ans:2,exp:'Online Class SOP: use screen sharing when necessary for slides, videos, or exercises.'},
+  ]},
+  {name:'Demo Lessons & Test Retake Procedures',topic:'Teaching SOP',qs:[
+    {mod:'Demo & Retakes',type:'mc',q:'During a demo lesson, should the tutor run a special showcase or a normal lesson?',opts:['A showcase with the best activities only','A normal lesson — the demo student observes authentic classroom life','A placement test to assess the new student','A speaking-only session'],ans:1,exp:'Demo lessons are real lessons. The new student experiences genuine classroom dynamics, not a staged performance.'},
+    {mod:'Demo & Retakes',type:'mc',q:'A student scored 55% on the Final Test. Are they eligible for a retake?',opts:['No — below 60% means repeat the level','Yes — 50% or above qualifies for one retake','Yes — any score qualifies for a retake','Only if the tutor recommends it'],ans:1,exp:'Students who scored 50% or above on the Final Test are eligible for one retake. Below 50% means repeating the level.'},
+    {mod:'Demo & Retakes',type:'mc',q:'Where is the Final Test retake document located?',opts:['Admin prints a fresh version','In the Mid Test folder in Notion','In the Final Test → Retake section of the corresponding level page in Notion','The tutor creates it based on weak areas'],ans:2,exp:'The retake is found in the Final Test → Retake section of the corresponding level page in Notion.'},
+    {mod:'Demo & Retakes',type:'mc',q:'A student fails both the Final Test and the retake. What happens next?',opts:['They get a third attempt','They receive a certificate with a note','They are moved to another group to repeat the level, preferably joining from the middle','They are removed from Sevenine'],ans:2,exp:'Failed Retake SOP: move to another group to repeat the level, preferably joining from the middle of the level.'},
+    {mod:'Demo & Retakes',type:'mc',q:'Why does the lesson theme in CRM help when inviting a student to a demo lesson?',opts:['It determines which teacher leads the demo','It helps admin decide which group is most suitable based on the current topic','It is required for the attendance record','It affects which room is assigned'],ans:1,exp:'Per the "Why and how to set lesson theme in CRM" SOP: the lesson theme helps admin select the most suitable group for a demo student.'},
+    {mod:'Demo & Retakes',type:'mc',q:'A tutor discovers mid-lesson that the lesson theme was not set in CRM from the previous session. What must they do?',opts:['Leave it — the previous tutor\'s responsibility','Set it now for the current lesson and note the oversight to admin','Move on — CRM is admin\'s job','Ask admin to correct it after class'],ans:1,exp:'Tutors must keep CRM up to date. If a theme was missed, set it as soon as noticed and inform admin of the oversight.'},
+    {mod:'Demo & Retakes',type:'mc',q:'What is the minimum Final Test score that qualifies a student for a retake?',opts:['40%','50%','60%','70%'],ans:1,exp:'Students who scored not less than 50% on the Final Test are eligible for one retake.'},
+    {mod:'Demo & Retakes',type:'mc',q:'A student failed the retake. When can they join the repeat group?',opts:['From the very beginning only','Preferably from the middle of the level','After a mandatory two-week break','After completing an additional placement test'],ans:1,exp:'Failed Retake SOP: the student joins the repeat group preferably from the middle of the level — not necessarily from the start.'},
+    {mod:'Demo & Retakes',type:'mc',q:'What is the key additional function of setting the lesson theme in CRM beyond admin tracking?',opts:['It automatically emails parents','Substitute tutors know exactly what topic to cover','It generates the homework automatically','It updates the Telegram group pinned message'],ans:1,exp:'Substitute tutors can see exactly what has been covered and what to teach next — a direct operational benefit of the lesson theme.'},
+    {mod:'Demo & Retakes',type:'mc',q:'A student scored 47% on the Final Test. What must happen?',opts:['One retake is still offered','They repeat the level — below 50% means no retake','They receive a partial certificate','The tutor decides what to do'],ans:1,exp:'Below 50% on the Final Test = no retake eligibility. The student must repeat the full level.'},
+  ]},
+  {name:'Online Class Protocols',topic:'Online Class SOP',qs:[
+    {mod:'Online Classes',type:'mc',q:'How far in advance must the tutor share the Google Meet link?',opts:['30 minutes before','10 minutes before','At the start of the lesson','The day before'],ans:1,exp:'Online Class SOP: schedule and share the Google Meet link at least 10 minutes before the lesson.'},
+    {mod:'Online Classes',type:'mc',q:'Is a student\'s camera required to be on during an online class?',opts:['No — cameras are optional','Yes — cameras must remain ON throughout the class','Only during speaking tasks','Only for IELTS groups'],ans:1,exp:'Camera must remain ON throughout the class — this is a non-negotiable Online Class SOP rule.'},
+    {mod:'Online Classes',type:'mc',q:'Google Meet fails during a lesson. The correct immediate action is:',opts:['Cancel the lesson and reschedule it','Wait up to 20 minutes for recovery','Inform admin immediately and switch to Telegram Video Call or Zoom','Continue with audio only'],ans:2,exp:'Online Class SOP: if Google Meet fails, inform admin immediately and switch to the backup platform.'},
+    {mod:'Online Classes',type:'mc',q:'When should screen sharing be used in an online lesson?',opts:['Never — it distracts students','Only in IELTS lessons','When needed for slides, videos or exercises','Only in the first 10 minutes'],ans:2,exp:'Screen sharing is encouraged when needed to present interactive exercises, videos or slides.'},
+    {mod:'Online Classes',type:'mc',q:'What is the backup hierarchy if Google Meet fails?',opts:['Zoom → WhatsApp Call','Telegram Video Call → Zoom','Skype → Teams','WhatsApp → Zoom'],ans:1,exp:'The fallback chain: Google Meet → Telegram Video Call → Zoom.'},
+    {mod:'Online Classes',type:'mc',q:'A student\'s connection drops briefly and they reconnect. How is attendance recorded?',opts:['Absent — connection dropped','Present — brief drops do not constitute absence','Late — mark them as arriving mid-lesson','Admin decides'],ans:1,exp:'A brief connection drop is not absence. The student attended. Mark present and continue the lesson.'},
+    {mod:'Online Classes',type:'mc',q:'Do the coin rules (lateness, negative balance) apply during online lessons?',opts:['No — online lessons have different rules','Yes — the same coin rules apply equally online and in-person','Only 1–5 coins maximum online','Only homework coins apply online'],ans:1,exp:'The coin system applies equally to online and in-person lessons. All the same rules govern coin awards.'},
+    {mod:'Online Classes',type:'mc',q:'A student is consistently late joining online lessons. What is the correct SOP response?',opts:['Ignore it — online lateness is harder to enforce','Warn them publicly in the Telegram group chat','Inform admin, who handles follow-up communication','Remove them from the online group'],ans:2,exp:'The same lateness escalation protocol applies online: inform admin, who contacts the student or parents.'},
+    {mod:'Online Classes',type:'mc',q:'A student joins the online class with a broken microphone and communicates via chat. Can they earn coins?',opts:['No — broken microphone = absent','Yes, but maximum 1–5 only','Coins are possible if they arrived on time and participate via chat','Only if admin confirms participation'],ans:2,exp:'If the student arrived on time and participates actively (even via chat), the standard coin rules apply. Lateness or negative balance are the only blockers.'},
+    {mod:'Online Classes',type:'mc',q:'The primary platform for Sevenine online lessons is:',opts:['Zoom','Telegram Video Call','Google Meet','Microsoft Teams'],ans:2,exp:'Google Meet is the primary platform. All other platforms are backup only.'},
+  ]},
+  {name:'Error Correction in Depth',topic:'Error Correction Policy SOP',qs:[
+    {mod:'Error Correction',type:'mc',q:'How many Golden Rules of Error Correction does Sevenine\'s policy contain?',opts:['2','3','4','5'],ans:1,exp:'There are exactly 3 Golden Rules of Error Correction in Sevenine\'s Error Correction Policy.'},
+    {mod:'Error Correction',type:'mc',q:'A student self-corrects after making a grammar error. The tutor should:',opts:['Correct them again to confirm the right form','Acknowledge and praise the self-correction','Ignore it — self-correction is expected and requires no response','Ask another student to verify the correction'],ans:1,exp:'Self-correction is a high-value learning moment. The tutor acknowledges and praises it to reinforce the behaviour.'},
+    {mod:'Error Correction',type:'mc',q:'A student is mid-sentence in a fluency activity and makes an error. When should the tutor correct?',opts:['Immediately — accuracy is always the priority','Never during fluency activities','After the student finishes their thought, or at the end of the activity','Only in follow-up writing tasks'],ans:2,exp:'Golden Rule: never interrupt fluency. Wait until the student finishes their point or until the end of the activity.'},
+    {mod:'Error Correction',type:'mc',q:'Which comment is explicitly prohibited under Sevenine\'s Error Correction Policy?',opts:['"Good try — one small correction here."','"Almost right — try it again."','"You always make this mistake."','"Nice word choice — just fix the tense."'],ans:2,exp:'"You always make this mistake" is demoralising and explicitly prohibited. Error correction must be encouraging, not personal.'},
+    {mod:'Error Correction',type:'mc',q:'What is the correct sequence when a student makes a speaking error?',opts:['Immediately give the correct form','Encourage self-correction first → provide correction only if needed → brief explanation','Ignore and revisit in a writing task later','Write the error on the board for the whole class to discuss'],ans:1,exp:'The SOP sequence: self-correction first. Only step in if the student cannot self-correct.'},
+    {mod:'Error Correction',type:'mc',q:'A tutor says "Did you mean to say...?" after a student\'s error. This technique is called:',opts:['Explicit correction','Elicitation — prompting self-correction without giving the answer','Ignoring the error','A prohibited correction style'],ans:1,exp:'"Did you mean...?" is an elicitation technique — it prompts self-correction rather than directly supplying the answer.'},
+    {mod:'Error Correction',type:'mc',q:'A student makes the same error across multiple lessons. The correct approach is:',opts:['Correct it immediately every time it appears','Note it and address it systematically during revision activities','Inform parents immediately','Ignore it — repetition means it is fossilised'],ans:1,exp:'Recurring errors are addressed during dedicated revision activities — not interrupted mid-fluency each time they occur.'},
+    {mod:'Error Correction',type:'mc',q:'When marking written work, which approach aligns with Sevenine standards?',opts:['Circle every error in red and return without comment','Only mark errors, no explanation','Indicate the error and give the student the chance to self-correct before providing the answer','Give the corrected version directly without explanation'],ans:2,exp:'The correction approach always prioritises the student\'s ability to self-identify errors first.'},
+    {mod:'Error Correction',type:'mc',q:'A student makes an error that could embarrass them. The correct approach is:',opts:['Correct loudly so the class learns from it','Correct quietly and discreetly to protect confidence','Ignore it to avoid discomfort','Ask a stronger student to demonstrate the correct form'],ans:1,exp:'Sensitive correction protects the student\'s confidence while still addressing the error.'},
+    {mod:'Error Correction',type:'mc',q:'Why must error correction distinguish between fluency and accuracy tasks?',opts:['There is no distinction — all errors must be corrected','Fluency tasks prioritise communication — interrupting breaks flow and defeats the purpose','Accuracy tasks are less important than fluency','Only IELTS students need accuracy correction'],ans:1,exp:'Fluency tasks build communication and confidence — interrupting defeats their purpose. Accuracy tasks are the dedicated space for systematic correction.'},
+  ]},
+  {name:'Student Performance Reports',topic:'SPR SOP',qs:[
+    {mod:'Performance Reports',type:'mc',q:'How often is the Student Performance Report submitted?',opts:['After each test','Monthly','Weekly','At the end of each term'],ans:2,exp:'The SPR is a weekly obligation — submitted every week.'},
+    {mod:'Performance Reports',type:'mc',q:'What should the weekly rating be based on?',opts:['The most recent lesson only','The term average','The whole week — not just one lesson','The student\'s test scores'],ans:2,exp:'The SPR SOP: the rating reflects the student\'s overall performance across the whole week, not a single lesson.'},
+    {mod:'Performance Reports',type:'mc',q:'Who sends the Performance Report to parents?',opts:['The tutor sends it directly','The director','The admin, after receiving it from the tutor','CRM sends it automatically'],ans:2,exp:'It is a two-step process: tutor completes the report → admin sends it to parents.'},
+    {mod:'Performance Reports',type:'mc',q:'The Performance Report uses which rating scale?',opts:['1–10','Percentage only','1–3 with parent-facing descriptions','A–F letter grades'],ans:2,exp:'The SPR uses a 1–3 scale, with each level accompanied by a parent-facing description.'},
+    {mod:'Performance Reports',type:'mc',q:'A student had two strong lessons and one weak one this week. How should they be rated?',opts:['Rate based on the worst lesson as a warning','Rate based on the two good lessons only','Give an honest, balanced rating that reflects the overall week','Automatically give a 1 if there is any inconsistency'],ans:2,exp:'The rating is holistic and honest — it reflects the overall week. Tutors must avoid over- and under-rating.'},
+    {mod:'Performance Reports',type:'mc',q:'The SPR is primarily a tool for:',opts:['Internal academic records','Legal documentation','Parent communication and student retention','Tutor salary calculation'],ans:2,exp:'The SPR is a parent communication and retention tool. Regular transparent reporting keeps parents engaged and students enrolled.'},
+    {mod:'Performance Reports',type:'mc',q:'A tutor gives all students a 3 rating every week without reviewing performance. This is:',opts:['Efficient — saves time','A violation of reporting standards','Fine if students are generally doing well','Only a problem if parents notice'],ans:1,exp:'Inaccurate reporting violates the SPR SOP. Ratings must honestly reflect genuine weekly performance.'},
+    {mod:'Performance Reports',type:'mc',q:'Alongside the rating number, what must the report include?',opts:['Nothing extra — the number is enough','A long essay about the week','A brief description matching the rating level','A list of every mistake from the week'],ans:2,exp:'Each rating level has a parent-facing description that must accompany the rating — it makes the report meaningful to parents.'},
+    {mod:'Performance Reports',type:'mc',q:'A tutor skips submitting the report for one week. This is:',opts:['Acceptable — one miss is fine','A reporting SOP violation','Something admin handles automatically','Fine if students are doing well'],ans:1,exp:'Missing the weekly report is a direct SOP violation. Consistent weekly submission is mandatory.'},
+    {mod:'Performance Reports',type:'mc',q:'The SPR is called a retention tool because:',opts:['It shows students their grades so they stay motivated','Regular parent communication builds trust and keeps families enrolled','It prevents students switching schools','It tracks IELTS preparation progress'],ans:1,exp:'Consistent, transparent parent communication through the SPR is a core driver of student retention at Sevenine.'},
+  ]},
+  {name:'Teaching Programme & Navigate',topic:'Teaching Programme Manual',qs:[
+    {mod:'Teaching Programme',type:'mc',q:'What is the core teaching programme at Sevenine built on?',opts:['Cambridge English courses','IELTS preparation materials','Oxford Navigate','Sevenine custom workbooks only'],ans:2,exp:'The Teaching Programme Manual: the core programme is Oxford Navigate — a structured, interactive course for communicative competence through real-life contexts.'},
+    {mod:'Teaching Programme',type:'mc',q:'In a large group, how many speaking questions per student is the standard during a lesson activity?',opts:['1','2','3','All questions to everyone'],ans:1,exp:'Teaching Programme Manual: 2 questions per student in large groups ensures everyone participates without the activity overrunning.'},
+    {mod:'Teaching Programme',type:'mc',q:'If fewer than 8 students are answering in a speaking activity, what is permitted?',opts:['Skip the activity','Every student can answer every question','Only the top 3 students answer','Use written answers instead'],ans:1,exp:'The 2-question rule is for large groups. With fewer than 8, every student can answer every question.'},
+    {mod:'Teaching Programme',type:'mc',q:'The CPT (Classroom Presentation Tool) must be used:',opts:['Only for grammar lessons','Only in IELTS preparation','To display interactive exercises and explain topics for Navigate lessons','Only when internet is fast enough'],ans:2,exp:'The Teaching Programme Manual: teachers must use the CPT to display interactive exercises and explain topics — mandatory for Navigate.'},
+    {mod:'Teaching Programme',type:'mc',q:'Oxford Navigate is described as a course designed to build:',opts:['Exam scores only','Communicative competence through real-life contexts','Grammar accuracy through drills','Vocabulary through repetition lists'],ans:1,exp:'Navigate builds communicative competence through real-life contexts — authentic, functional language use.'},
+    {mod:'Teaching Programme',type:'mc',q:'The Speaking Programme is aligned with:',opts:['IELTS topic banks','Oxford Navigate units','Sevenine grammar drills','Cambridge vocabulary lists'],ans:1,exp:'Each Speaking Programme unit corresponds to a specific Oxford Navigate unit — they are tightly integrated.'},
+    {mod:'Teaching Programme',type:'mc',q:'By when must students complete their prepared speaking answers for a Navigate unit?',opts:['Any time before the final exam','By the second subunit','By the last subunit of the same Navigate unit','At the start of the next unit'],ans:2,exp:'Students must be ready with their prepared answers by the last subunit of the same Navigate unit — not deferred.'},
+    {mod:'Teaching Programme',type:'mc',q:'Sharing Navigate resource links with students is:',opts:['Optional — for motivated students only','A tutor SOP responsibility for every group','Only admin\'s job','Only needed for IELTS groups'],ans:1,exp:'Tutors are responsible for sharing Navigate resource links from the level page. It is a stated SOP obligation.'},
+    {mod:'Teaching Programme',type:'mc',q:'A tutor skips the CPT because the projector is slow today. This is:',opts:['Acceptable — student experience matters more','A violation — the CPT is mandatory regardless of technical inconvenience','Fine if lesson objectives are still met','Allowed with admin permission'],ans:1,exp:'The CPT is mandatory for Navigate lessons. Technical inconvenience does not excuse skipping it.'},
+    {mod:'Teaching Programme',type:'mc',q:'How should Speaking Programme vocabulary be taught?',opts:['Give students a list to memorise silently','Translate each phrase word-by-word','Demonstrate vocabulary inside real, complete answers in context','Ask students to write definitions in notebooks'],ans:2,exp:'Speaking Programme methodology: vocabulary is demonstrated in context — inside real answers, not in isolation.'},
+  ]},
+  {name:'CRM Deep Dive',topic:'CRM SOP',qs:[
+    {mod:'CRM Deep Dive',type:'mc',q:'A group on even days, room Central Perk, 16:00, Standard tariff. Correct name:',opts:['1CP16:00 Standard','2CP16:00 Standard','CP16:00/2/Standard','Standard-2-CP-16:00'],ans:1,exp:'Format: day code (2=even) + room (CP) + time + tariff. Correct: 2CP16:00 Standard.'},
+    {mod:'CRM Deep Dive',type:'mc',q:'A group moves from Central Perk to Silicon Valley. When is the name updated?',opts:['By end of the week','Before the next lesson','Immediately upon confirmation of the change','After director approval'],ans:2,exp:'Group name changes are immediate — not deferred.'},
+    {mod:'CRM Deep Dive',type:'mc',q:'The group name is updated in CRM. What else must be updated at the same time?',opts:['The classroom whiteboard','The Telegram group name','Admin\'s calendar','The student handbook'],ans:1,exp:'Both CRM and the group Telegram chat must be updated simultaneously.'},
+    {mod:'CRM Deep Dive',type:'mc',q:'Why is the lesson theme set in CRM — not just in a personal notebook?',opts:['CRM is easier to access','So admin can track group progress and substitutes know what to teach','Required for salary processing','To auto-generate certificates'],ans:1,exp:'Two key functions: admin tracking and substitute tutor guidance.'},
+    {mod:'CRM Deep Dive',type:'mc',q:'A student was absent but was accidentally marked present. Correct action:',opts:['Leave it — minor error','Correct it immediately and inform admin','Wait to see if the student objects','Only correct it if the parent asks'],ans:1,exp:'False attendance marking is a serious violation. Correct immediately and inform admin.'},
+    {mod:'CRM Deep Dive',type:'mc',q:'Homework is set verbally in class but not logged in CRM. This is:',opts:['Acceptable — verbal is valid','A violation — all homework must be logged in CRM','Fine if the student writes it down','Only required for formal assessments'],ans:1,exp:'CRM is the only valid channel for homework assignment. Verbal-only homework violates SOP.'},
+    {mod:'CRM Deep Dive',type:'mc',q:'What does "1" versus "2" signify at the start of a group name?',opts:['Room number 1 or 2','Number of students','1 = odd days, 2 = even days','First or second lesson of the day'],ans:2,exp:'1 = odd days, 2 = even days. This is the day-cycle code in Sevenine\'s naming convention.'},
+    {mod:'CRM Deep Dive',type:'mc',q:'A group\'s tariff changes from Standard to Duo. What must the tutor update?',opts:['CRM only','Telegram only','Both CRM and Telegram group name','Nothing — admin handles tariff changes'],ans:2,exp:'Any of five changes (day, time, level, tariff, room) triggers an immediate update to both CRM and Telegram.'},
+    {mod:'CRM Deep Dive',type:'mc',q:'A new student joins an existing Trio group. Their CRM status is:',opts:['Full member immediately','DEMO','Provisional for one month','Trial paying member'],ans:1,exp:'New students added to existing groups are always given DEMO status first.'},
+    {mod:'CRM Deep Dive',type:'mc',q:'Which of the following does NOT trigger a group name update?',opts:['Room change','Time change','New student joining the group','Tariff change'],ans:2,exp:'A new student joining does not affect the group name. Triggers: day, time, level, tariff, or room changes only.'},
+  ]},
+  {name:'Testing Procedures — Advanced',topic:'Testing SOP',qs:[
+    {mod:'Testing Advanced',type:'mc',q:'A student scores 83/120 on the Final Test and 8/10 on speaking. What options does the student have?',opts:['Pass — speaking score compensates for the low written score','The student may retake the written test to reach the ≥84 threshold','Certificate issued — close enough','Retake speaking only — the written part is not retakable'],ans:1,exp:'83/120 is below the ≥84 threshold. Speaking passes (8/10 ≥ 7). The student may retake the written Final Test to reach the required score.'},
+    {mod:'Testing Advanced',type:'mc',q:'A student passes the Final Test (85/120) but scores 6/10 on speaking. What happens?',opts:['Full pass — Final Test is the main criteria','Fail on both — must retake everything','One speaking retake is allowed','Must retake the full Final Test'],ans:2,exp:'Final ≥84 passes. Speaking fails (below 7). The student gets exactly one speaking retake — not a full test retake.'},
+    {mod:'Testing Advanced',type:'mc',q:'The retake of the Final Test uses:',opts:['The same test document repeated identically','A shortened version created by the tutor','The dedicated retake test document located at the end of the Final Test page in Notion','A new test prepared by admin'],ans:2,exp:'The dedicated retake test document is used — found at the end of the Final Test page for that level in Notion.'},
+    {mod:'Testing Advanced',type:'mc',q:'A tutor gives the same Final Test document for the retake. This is:',opts:['Fine if enough time has passed','A minor procedural error','A serious SOP violation','Fine if some questions are changed'],ans:2,exp:'Using the same test for retakes is explicitly a serious SOP violation. The alternate variant is mandatory.'},
+    {mod:'Testing Advanced',type:'mc',q:'The writing section is:',opts:['Done on a separate day','Included in the fully printed test — not separate','Optional at tutor discretion','Completed at home'],ans:1,exp:'Writing is included in the fully printed test. It is never administered separately or made optional.'},
+    {mod:'Testing Advanced',type:'mc',q:'A student asks to skip speaking and pass on written score alone. The answer is:',opts:['Yes — if written score is very high','Yes — speaking is supplementary','No — both Final (≥84) AND Speaking (≥7) are mandatory simultaneously','Only for upper-intermediate students'],ans:2,exp:'Both conditions are mandatory. Neither substitutes for the other.'},
+    {mod:'Testing Advanced',type:'mc',q:'A student scores exactly 84/120 on Final and 7/10 on speaking. Result?',opts:['Fail — needs more than 84','Pass','Retake speaking','Borderline — director decides'],ans:1,exp:'84/120 meets the ≥84 threshold. 7/10 meets the ≥7 threshold. Result: Pass.'},
+    {mod:'Testing Advanced',type:'mc',q:'A student scored 47% on the Final Test. What happens?',opts:['One retake offered — close to 50%','No retake — must repeat the level','Tutor decides based on effort','Retake with extra preparation time'],ans:1,exp:'Below 50% = no retake eligibility. The student must repeat the full level.'},
+    {mod:'Testing Advanced',type:'mc',q:'Where does the tutor find the correct time allocation for a test?',opts:['Ask admin before each test','Decide based on class length','The test page for the corresponding level in Notion','The Teacher\'s Guide appendix'],ans:2,exp:'Time allocations are level-specific and are found on the test page in Notion.'},
+    {mod:'Testing Advanced',type:'mc',q:'A student misses the speaking assessment but scored 90/120 on the written Final Test. Result?',opts:['Pass — written score is strong','Fail — speaking is a mandatory condition','Partial certificate until speaking is done','Tutor estimates a speaking score'],ans:1,exp:'Both conditions must be met simultaneously. Missing speaking = Fail, regardless of the written score.'},
+  ]},
+  {name:'Coins & Shop — Advanced Scenarios',topic:'Sevenine Shop SOP',qs:[
+    {mod:'Shop Advanced',type:'mc',q:'What is the purpose of the Sevenine Shop?',opts:['Generate revenue for the school','Encourage top-performing students through a coin reward system','Sell stationery and materials','Fund IELTS preparation courses'],ans:1,exp:'The Sevenine Shop is a reward mechanism specifically for encouraging strong academic performance — not a commercial tool.'},
+    {mod:'Shop Advanced',type:'mc',q:'A student with a negative balance (red dot) asks if they can earn coins even though they can\'t redeem. Answer:',opts:['Yes — earning and redeeming are separate functions','No — a negative balance blocks all coin earning completely','Yes — maximum 1–5 coins only','Only after paying part of the balance'],ans:1,exp:'The SOP is absolute: a red dot (negative balance) blocks all coin earning — period.'},
+    {mod:'Shop Advanced',type:'mc',q:'A student was 2 minutes late but then delivered the best performance in the group. Can they earn 6–20 coins?',opts:['Yes — exceptional performance overrides lateness','No — any late arrival means zero coins for the whole lesson','Yes — but maximum 5','Yes — at the tutor\'s discretion'],ans:1,exp:'Lateness of any amount blocks all coin earning for that lesson. No exceptions — even exceptional performance.'},
+    {mod:'Shop Advanced',type:'mc',q:'A student arrives on time, submits flawless homework and participates actively. Correct coin range:',opts:['0 coins','1–5 coins','6–20 coins','Any amount — tutor decides'],ans:1,exp:'Strong consistent performance (on time, flawless homework, active participation) = 1–5 coins. The 6–20 range requires genuinely exceptional, standout performance.'},
+    {mod:'Shop Advanced',type:'mc',q:'The 6–20 coin range is for:',opts:['Any lesson with good homework','Performance that is genuinely exceptional and significantly stands out from the group','After mid-term tests only','IELTS students only'],ans:1,exp:'6–20 coins require performance that truly stands out — not just consistent quality.'},
+    {mod:'Shop Advanced',type:'mc',q:'1–5 coins represent:',opts:['Minimum effort — just showing up','Flawless homework, strong understanding and active participation','Arriving on time only','Exam performance'],ans:1,exp:'1–5 coins = solid, consistent performance: flawless homework, strong comprehension, active participation.'},
+    {mod:'Shop Advanced',type:'mc',q:'A student forgot homework but participated brilliantly in class. Coin range?',opts:['1–5 — participation was brilliant despite missing homework','6–20 — outstanding class performance compensates','Zero — missing homework means no coins for the lesson','Any amount — the tutor decides'],ans:2,exp:'Missing homework affects the overall performance picture. With homework absent, full 1–5 range applies but 6–20 cannot be justified.'},
+    {mod:'Shop Advanced',type:'mc',q:'Who processes coin redemptions?',opts:['The tutor in class','The student via an online portal','The admin','The director approves each one'],ans:2,exp:'Coin redemptions are processed by the admin. The tutor\'s only role is to award coins during lessons.'},
+    {mod:'Shop Advanced',type:'mc',q:'Is the coin system optional for tutors to implement?',opts:['Yes — at the tutor\'s discretion','No — it is a mandatory part of the Sevenine teaching SOP','Optional for groups below B1','Only for groups with more than 4 students'],ans:1,exp:'The Sevenine Shop and coin system are a mandatory part of the teaching framework — not optional.'},
+    {mod:'Shop Advanced',type:'mc',q:'When is a student completely blocked from earning coins?',opts:['When absent only','When late by any amount only','When having a negative balance only','Both: any lateness OR a negative balance'],ans:3,exp:'Two blockers: (1) any late arrival to the lesson, (2) negative balance (red dot). Either condition = zero coins for that lesson.'},
+  ]},
+  {name:'Mixed SOP Scenarios',topic:'All SOPs',qs:[
+    {mod:'Mixed',type:'mc',q:'A substitute tutor steps in at short notice. Where do they find what topic the group is studying?',opts:['They call the regular tutor','They ask the students','The lesson theme set in CRM','They start from the beginning of the current unit'],ans:2,exp:'The lesson theme in CRM exists precisely so substitutes know exactly what to cover.'},
+    {mod:'Mixed',type:'mc',q:'A tutor leaves after class without turning off the projector. This:',opts:['Has no consequence — admin turns it off','Is a minor oversight','Shortens the projector lamp lifetime and is a violation','Is only a problem if it happens repeatedly'],ans:2,exp:'Projector lamp has a limited lifetime. Leaving it on unnecessarily is an Equipment SOP violation.'},
+    {mod:'Mixed',type:'mc',q:'A student scores 90/120 on Final but misses the speaking assessment entirely. Result?',opts:['Pass — written score is very strong','Fail — speaking (≥7) is mandatory','Partial certificate pending speaking','Tutor estimates a speaking score'],ans:1,exp:'Both conditions must be met: Final ≥84 AND Speaking ≥7. No speaking attempt = Fail.'},
+    {mod:'Mixed',type:'mc',q:'A student submits homework that is partially correct. The tutor should:',opts:['Mark it as incorrect and give zero coins','Mark only what is fully correct and ignore the rest','Acknowledge the effort, identify errors clearly, and give the student a chance to correct them','Give full credit — effort is what counts'],ans:2,exp:'Partial homework should be acknowledged honestly — recognise effort, identify specific errors, and follow the error correction approach: give the student a chance to correct before the tutor intervenes.'},
+    {mod:'Mixed',type:'mc',q:'A tutor notices a student has been disengaged and quiet for two consecutive lessons. What is the correct action?',opts:['Ignore it — students have off days','Call on them more to re-engage them publicly','Note it in the Performance Report and mention it to admin for follow-up','Send a message to the student in the group chat'],ans:2,exp:'Persistent disengagement should be noted in the weekly SPR and flagged to admin. This is the formal communication channel for student welfare concerns.'},
+    {mod:'Mixed',type:'mc',q:'A tutor finishes a Navigate unit but the Speaking Programme for it is incomplete. What happens?',opts:['Move on — speaking is covered in the next unit','Complete the Speaking Programme before moving on to the next unit','Ask admin for an extension','Incorporate it into the next unit\'s warm-up'],ans:1,exp:'The Speaking Programme must be completed by the last subunit of the same Navigate unit. Moving on without completing it violates the SOP.'},
+    {mod:'Mixed',type:'mc',q:'A demo student asks to officially enrol mid-lesson. Who handles this?',opts:['The tutor can confirm on the spot','Admin processes the enrolment — tutor continues the lesson','Director must approve first','It happens automatically after one demo'],ans:1,exp:'Enrolment is an admin function. The tutor\'s role is to continue the lesson; admin handles the rest.'},
+    {mod:'Mixed',type:'mc',q:'A student scored 52% on the Final Test. Before the retake, what must happen?',opts:['Schedule the retake immediately','The lessons after the failed test focus on revision and correction of mistakes','Admin must approve the retake','The student must pay a retake fee'],ans:1,exp:'The post-failure lessons focus on revision and error correction from the failed test — preparation before the retake.'},
+    {mod:'Mixed',type:'multi',q:'Which TWO of the following are SOP-stated reasons for setting the lesson theme in CRM?',opts:['Admin can track group progress','It auto-generates parent reports','Substitute tutors know what topic to cover','It is required for salary calculation'],ans:[0,2],exp:'The two SOP-stated reasons: admin progress tracking and substitute tutor guidance.'},
+    {mod:'Mixed',type:'mc',q:'A performance assessment is unannounced. This reflects which standard?',opts:['Assessments should be announced for fairness','Tutors are expected to perform to standard every lesson — not just when observed','One poor lesson is forgivable','The unannounced system is unfair to tutors'],ans:1,exp:'Unannounced assessments exist because Sevenine expects consistent quality every lesson — not performance staged for observers.'},
+  ]},
+];
+
+const ADMIN_TRAINING_QUIZZES = [
+  {name:'Уровневая система и программы',topic:'Блок 2',qs:[
+    {mod:'Уровни',type:'mc',q:'Студент окончил Upper-Intermediate. Что предлагает администратор дальше?',opts:['Повторить Upper-Intermediate ещё раз','IELTS или другую специализированную программу по выбору','Курс Advanced General English','Сертификат без продолжения'],ans:1,exp:'Upper-Intermediate — финальный уровень General English. После него — IELTS или другая специализированная программа.'},
+    {mod:'Уровни',type:'mc',q:'Клиент хочет IELTS, уровень Pre-Intermediate. Что говорит администратор?',opts:['Записать на IELTS сразу','Объяснить: минимальный уровень — Upper-Intermediate. Предложить начать с General English','Предложить IELTS через 2 месяца','Провести пробный IELTS-тест'],ans:1,exp:'Pre-Intermediate — слишком низкий уровень для IELTS. Администратор объясняет логику и предлагает начать с General English.'},
+    {mod:'Уровни',type:'mc',q:'Переход на IELTS после Intermediate — при каком условии это допустимо?',opts:['Запрещено в любом случае','При ограниченных сроках и цели 5.0–6.0','Для любой цели IELTS','Только с разрешения директора'],ans:1,exp:'С Intermediate на IELTS — только при сжатых сроках и скромной цели (5.0–6.0). Для 7.0+ нужен Upper-Intermediate.'},
+    {mod:'Уровни',type:'mc',q:'Студент хочет IELTS 6.5, уровень Upper-Intermediate. Действие администратора:',opts:['Записать на IELTS — уровень подходит','Порекомендовать ещё месяц General English','Провести дополнительное тестирование','Направить на Intermediate IELTS'],ans:0,exp:'Upper-Intermediate — стандартный минимум для IELTS. Цель 6.5 реалистична. Записать.'},
+    {mod:'Уровни',type:'mc',q:'Что охватывает IELTS-курс помимо языковых навыков?',opts:['Только writing и reading','Академическую лексику','Экзаменационные техники для всех 4 навыков','Деловой английский'],ans:2,exp:'IELTS-курс: 4 навыка + экзаменационные техники выполнения заданий.'},
+    {mod:'Уровни',type:'mc',q:'Средняя продолжительность IELTS-курса:',opts:['1 месяц','2 месяца','3–4 месяца','6–12 месяцев'],ans:2,exp:'3–4 месяца — стандартная продолжительность IELTS-курса в Sevenine.'},
+    {mod:'Уровни',type:'mc',q:'Зачем нужен UKVI IELTS?',opts:['Он проще обычного IELTS','Он дешевле','Имеет юридический статус для британских виз','Даёт более высокий балл'],ans:2,exp:'UKVI IELTS имеет особый юридический статус — результаты признаются UK Visas and Immigration для визовых целей.'},
+    {mod:'Уровни',type:'mc',q:'Что получает студент после успешного окончания уровня?',opts:['Международный диплом IELTS','Сертификат Sevenine об окончании уровня','Оксфордский сертификат','Только знания — без документа'],ans:1,exp:'После прохождения Final Test + Speaking студент получает сертификат Sevenine.'},
+    {mod:'Уровни',type:'mc',q:'Что означает "базовый уровень допуска" на IELTS в Sevenine?',opts:['Средний балл входного теста','Минимальный уровень языка для зачисления на IELTS-курс','Минимальный целевой балл IELTS','Уровень после окончания курса IELTS'],ans:1,exp:'Базовый уровень допуска = минимальный уровень владения языком, необходимый для обучения на IELTS-курсе. Стандарт: Upper-Intermediate.'},
+    {mod:'Уровни',type:'mc',q:'Студент Elementary хочет перейти в Pre-Intermediate досрочно. Кто принимает решение?',opts:['Студент выбирает сам','Преподаватель — по результатам тестирования','Администратор самостоятельно','Директор утверждает перевод'],ans:1,exp:'Уровень определяет преподаватель по итогам тестирования. Желание студента не является основанием.'},
+  ]},
+  {name:'Проведение тестирования уровня',topic:'Блок 4',qs:[
+    {mod:'Тестирование',type:'mc',q:'Как проходит тестирование нового студента при зачислении?',opts:['Только устный опрос','Только онлайн placement-тест','Грамматический placement-тест + speaking-проверка','Собеседование с директором'],ans:2,exp:'При зачислении: грамматический placement-тест (онлайн) + speaking-проверка с преподавателем.'},
+    {mod:'Тестирование',type:'mc',q:'С чего начинается speaking-проверка?',opts:['С вопросов уровня Upper-Intermediate','С предполагаемого уровня студента','Поэтапно — начиная с beginner-вопросов','С академических тем'],ans:2,exp:'Поэтапный подход: начинаем с beginner и повышаем — чтобы точно найти верхний предел.'},
+    {mod:'Тестирование',type:'mc',q:'Грамматика высокая, speaking слабый. Группа определяется:',opts:['По среднему баллу','По грамматике','По speaking — ключевой критерий','Студент выбирает'],ans:2,exp:'Speaking — главный критерий при распределении по группам.'},
+    {mod:'Тестирование',type:'mc',q:'После тестирования в CRM вносится:',opts:['Только имя и телефон','Результат теста и присвоенный уровень','Способ оплаты','Предпочтительное расписание'],ans:1,exp:'В CRM: результат тестирования + присвоенный уровень — обязательно.'},
+    {mod:'Тестирование',type:'mc',q:'Студент настаивает, что его уровень выше результата теста. Действия:',opts:['Согласиться — студент знает себя','Объяснить, что уровень определяется по speaking, предложить повторную проверку','Передать директору','Записать в более высокую группу пробно'],ans:1,exp:'Уровень = результат тестирования. Можно предложить повторную speaking-проверку, но не изменять уровень по желанию.'},
+    {mod:'Тестирование',type:'mc',q:'Зачем начинать speaking-проверку с beginner-уровня?',opts:['Чтобы студент не волновался','Чтобы точно найти уровень, где начинаются затруднения','Это просто традиция','Чтобы сэкономить время'],ans:1,exp:'Поэтапный подход позволяет точно определить реальную верхнюю границу владения языком.'},
+    {mod:'Тестирование',type:'mc',q:'Кто участвует в проведении speaking-проверки?',opts:['Только администратор','Только преподаватель','Преподаватель и администратор совместно','Директор'],ans:2,exp:'Speaking-проверка — совместная задача преподавателя и администратора.'},
+    {mod:'Тестирование',type:'mc',q:'Результат: Pre-Intermediate. Студент хочет в Intermediate. Ответ:',opts:['Записать — один уровень разницы мал','Объяснить: группа определяется тестированием, Pre-Intermediate — правильный выбор','Дать 2 недели на самостоятельное обучение','Попросить мнение преподавателя'],ans:1,exp:'Распределение основано на результатах. Зачислить выше уровня — навредить студенту.'},
+    {mod:'Тестирование',type:'mc',q:'Новый студент пришёл без записи и хочет группу сегодня. Первый шаг:',opts:['Записать в первую подходящую группу','Провести тестирование уровня','Попросить прийти в другой день','Предложить демо без тестирования'],ans:1,exp:'Любой новый студент — сначала тестирование. Без него определить правильную группу невозможно.'},
+    {mod:'Тестирование',type:'mc',q:'Что проверяется при speaking-тестировании?',opts:['Только произношение','Только грамматическую точность','Беглость, словарный запас, связность речи и уровень сложности','Только знание тем IELTS'],ans:2,exp:'Speaking-проверка оценивает коммуникативный уровень: беглость, словарный запас, связность и сложность речи.'},
+  ]},
+  {name:'Работа с новыми клиентами',topic:'Блок 10–11',qs:[
+    {mod:'Новые клиенты',type:'mc',q:'Клиент: "Сколько стоит обучение?" Правильный первый ответ:',opts:['Сразу назвать цену','Познакомиться и выяснить потребность перед тем, как говорить о стоимости','Отправить прайс в WhatsApp','Попросить прийти лично'],ans:1,exp:'Структура СОП: сначала знакомство и выявление потребности. Цена — после понимания нужд клиента.'},
+    {mod:'Новые клиенты',type:'mc',q:'Что должно быть в центре презентации курса?',opts:['Расписание групп','Цена обучения','Ценность и преимущества Sevenine под конкретную цель клиента','Биографии преподавателей'],ans:2,exp:'Презентация строится под цель клиента — ценность и преимущества, релевантные именно этому человеку.'},
+    {mod:'Новые клиенты',type:'mc',q:'Клиент говорит: "У вас дороже, чем в другой школе." Ответ:',opts:['Согласиться, что дороже','Объяснить ценность: система, малые группы, результат — и предложить демо-урок','Сразу дать скидку','Критиковать конкурентов'],ans:1,exp:'Возражение по цене закрывается через ценность. Демо-урок — практическое доказательство.'},
+    {mod:'Новые клиенты',type:'mc',q:'Клиент задаёт много вопросов. Что делает администратор?',opts:['Быстро ответить и предложить оплатить','Отвечать честно и подробно, снимая возражения','Переключить на директора','Дать буклет для самостоятельного изучения'],ans:1,exp:'Этап ответов на вопросы = снятие возражений. Честные и подробные ответы укрепляют доверие.'},
+    {mod:'Новые клиенты',type:'mc',q:'Финальный шаг структуры диалога с новым клиентом:',opts:['Попрощаться и ждать решения','Тестирование уровня или запись на демо-урок','Выставить счёт','Передать данные директору'],ans:1,exp:'Финальный шаг = конкретное действие: тестирование или демо-урок. Переводит интерес в зачисление.'},
+    {mod:'Новые клиенты',type:'mc',q:'При первом контакте минимально нужно узнать:',opts:['Имя и способ оплаты','Цель обучения и уровень студента','Расписание и тариф','Только имя'],ans:1,exp:'Базовая квалификация: цель обучения + уровень. Без этого невозможно сделать правильное предложение.'},
+    {mod:'Новые клиенты',type:'mc',q:'Клиент: "Гарантируете ли вы балл IELTS?" Ответ:',opts:['Да — гарантируем любой балл','Честно объяснить: система максимизирует шансы, но результат зависит от студента','Гарантировать 6.0','Уйти от ответа'],ans:1,exp:'Честность важна. Sevenine гарантирует систему и качество, но не конкретный балл IELTS.'},
+    {mod:'Новые клиенты',type:'mc',q:'Клиент не готов записаться прямо сейчас. Правильный шаг:',opts:['Отпустить и ждать','Давить для принятия решения сейчас','Предложить демо-урок как следующий шаг без давления','Дать скидку за срочность'],ans:2,exp:'Демо-урок — логичный следующий шаг без давления. Позволяет клиенту попробовать школу на практике.'},
+    {mod:'Новые клиенты',type:'mc',q:'Структура диалога при личном визите:',opts:['Сразу провести тестирование','Та же: знакомство → потребность → презентация → ответы → демо/тест','Записать контакты и перезвонить','Дать буклет'],ans:1,exp:'Структура одинакова при любом формате первого контакта — звонок или личный визит.'},
+    {mod:'Новые клиенты',type:'mc',q:'Клиент хочет записать ребёнка 14 лет в взрослую группу. Первый шаг:',opts:['Записать — 14 лет достаточно','Уточнить: окончил ли Kids Level 3 или возраст 13+ — условие выполнено, провести тестирование','Направить только в Kids','Отказать — только с 18 лет'],ans:1,exp:'14 лет = условие 13+ выполнено. Следующий шаг — тестирование уровня для определения правильной группы.'},
+  ]},
+  {name:'CRM — форматы и практика',topic:'Блок 6',qs:[
+    {mod:'CRM Практика',type:'mc',q:'Группа: нечётные дни, кабинет Silicon Valley, 18:00, тариф Duo. Название:',opts:['2SV18:00 Duo','1SV18:00 Duo','SV18:00 Нечётные/Duo','Duo/1/SV/18:00'],ans:1,exp:'Формат: 1 (нечётные) + SV (Silicon Valley) + 18:00 + Duo. Правильно: 1SV18:00 Duo.'},
+    {mod:'CRM Практика',type:'mc',q:'Группа переходит с Standard на Trio. Администратор обновляет:',opts:['Только CRM','Только Telegram','CRM и название Telegram-группы немедленно','Отчёт для директора'],ans:2,exp:'Любое изменение тарифа = изменение названия = обновление CRM и Telegram одновременно.'},
+    {mod:'CRM Практика',type:'mc',q:'Новый студент в Trio-группе. Его начальный статус:',opts:['Полноправный участник','DEMO','Временный','Испытательный'],ans:1,exp:'Новый студент в существующей группе всегда добавляется со статусом DEMO.'},
+    {mod:'CRM Практика',type:'mc',q:'"?" в комментарии лида "25 / ? / нечёт 10:00 / Standard / IELTS" означает:',opts:['Вопрос к директору','Уровень не определён','Студент сомневается','Тариф не выбран'],ans:1,exp:'"?" = уровень студента ещё не определён — тестирование не проводилось.'},
+    {mod:'CRM Практика',type:'mc',q:'Группа переезжает из Central Perk в Cooper Station. В названии меняется:',opts:['Ничего','Код комнаты: CP → CS','Только время','Всё название'],ans:1,exp:'Кабинет = часть названия. CP (Central Perk) → CS (Cooper Station).'},
+    {mod:'CRM Практика',type:'mc',q:'Администратор обновил CRM, но забыл Telegram. Это:',opts:['Некритично — CRM важнее','Нарушение СОП — оба обновляются одновременно','Исправить до конца недели','Только если студенты жалуются'],ans:1,exp:'СОП: CRM и Telegram обновляются одновременно — оба обязательны.'},
+    {mod:'CRM Практика',type:'mc',q:'Студент завершил уровень. Кто инициирует выдачу сертификата?',opts:['Преподаватель автоматически','Студент подаёт заявку','Администратор отслеживает и запускает процесс','Директор'],ans:2,exp:'По СОП "Распечатка Сертификата": администратор инициирует процесс.'},
+    {mod:'CRM Практика',type:'mc',q:'Красная точка у студента в CRM означает для преподавателя:',opts:['Студент отчислен','Студент не может получать монеты','Студент не может посещать','Уведомление для родителей'],ans:1,exp:'Красная точка (отрицательный баланс) = блокировка получения монет.'},
+    {mod:'CRM Практика',type:'mc',q:'Правильная последовательность в комментарии лида:',opts:['Имя / тариф / расписание / цель','Возраст / уровень / расписание / тариф / цель','Цель / возраст / тариф / расписание','Тариф / расписание / цель / уровень'],ans:1,exp:'Строгий формат: возраст / уровень / расписание (дни + время) / тариф / цель.'},
+    {mod:'CRM Практика',type:'mc',q:'Группа достигает 4 студентов. Что меняется?',opts:['Ничего','Переключается на регулярный формат с процентной оплатой преподавателя','Нужно одобрение директора','Студенты переходят на тариф Duo'],ans:1,exp:'4 студента = переход в регулярный формат с изменением формулы оплаты преподавателя.'},
+  ]},
+  {name:'Kids и возрастные переходы',topic:'Блок 3',qs:[
+    {mod:'Kids',type:'mc',q:'Максимальный возраст Kids-программы:',opts:['11','12','13','14'],ans:1,exp:'Kids-программа: 6–12 лет.'},
+    {mod:'Kids',type:'mc',q:'Ребёнок 11 лет окончил Kids Level 3. Может во взрослую программу?',opts:['Нет — только с 13','Да — Level 3 достаточно','Только с 12','Никогда до 13'],ans:1,exp:'Окончание Kids Level 3 — достаточное условие независимо от возраста.'},
+    {mod:'Kids',type:'mc',q:'Ребёнку 13 лет, Kids Level 2 не окончен. Может во взрослую группу?',opts:['Нет — нужен Level 3','Да — возраст 13+ достаточно','Только после тестирования','Решает директор'],ans:1,exp:'Возраст 13+ — самостоятельное условие перехода. Level 3 не обязателен.'},
+    {mod:'Kids',type:'mc',q:'Родители 10-летнего (Kids Level 1) хотят взрослую группу. Ответ:',opts:['Перевести — уровень важнее','Отказать: 10 < 13 и Level 1 ≠ Level 3','Проконсультироваться с директором','Пробный перевод'],ans:1,exp:'Оба условия не выполнены: возраст 10 < 13, Level 3 не окончен. Отказ.'},
+    {mod:'Kids',type:'mc',q:'Сколько уровней в Kids-программе?',opts:['2','3','4','5'],ans:1,exp:'Kids: Level 1, Level 2, Level 3 — три уровня.'},
+    {mod:'Kids',type:'mc',q:'Ребёнок 12 лет, Kids Level 2. Когда переход во взрослую группу?',opts:['Через месяц автоматически','После Level 3 или в 13 лет','В 12 уже можно','Только с 14'],ans:1,exp:'Нужно: Level 3 ИЛИ возраст 13+. Пока ни одно не выполнено.'},
+    {mod:'Kids',type:'mc',q:'Студент 8 лет хочет записаться в General English. Что делает администратор?',opts:['Автоматически направить в Kids — возраст всегда определяет программу','Провести Kids placement test: если уровень выше Kids Level 4, допуск в General English возможен','Отказать полностью — до 12 лет только Kids','Записать в General English без проверки уровня'],ans:1,exp:'8 лет = обычно Kids-программа, НО если student показывает уровень выше Kids Level 4 на тестировании, допуск в General English возможен.'},
+    {mod:'Kids',type:'mc',q:'Почему Level 3 — условие для перехода?',opts:['Уровень всегда важнее возраста','Level 3 = языковая зрелость для взрослой программы','Административное удобство','Скидка на взрослую программу'],ans:1,exp:'Kids Level 3 — языковой показатель готовности к взрослой программе.'},
+    {mod:'Kids',type:'mc',q:'13-летнему нужно тестирование перед взрослой группой?',opts:['Нет — 13 лет = автоматическое зачисление','Да — для определения правильного уровня группы','Только speaking','Только если хочет'],ans:1,exp:'Возраст даёт право перехода, но тестирование обязательно для определения уровня группы.'},
+    {mod:'Kids',type:'mc',q:'Чем отличается Kids от взрослой программы?',opts:['Только темпом','Возрастные активности, другая структура, адаптированная подача','Те же учебники, проще','Никакой разницы'],ans:1,exp:'Kids-программа адаптирована: другие активности, темп, подача — не просто упрощённая взрослая программа.'},
+  ]},
+  {name:'Запуск новых групп',topic:'Блок 15',qs:[
+    {mod:'Запуск групп',type:'mc',q:'Когда стартуют новые группы?',opts:['1–3 числа','5–7 числа','8–10 числа','15–17 числа'],ans:2,exp:'Новые группы стартуют 8–10 числа каждого месяца.'},
+    {mod:'Запуск групп',type:'mc',q:'Что означает * у имени лида в разделе «Набор»?',opts:['VIP-клиент','Аккаунт создан и участие подтверждено','Устное согласие получено','Студент из рекомендации'],ans:1,exp:'Звёздочка = аккаунт создан и участие официально подтверждено.'},
+    {mod:'Запуск групп',type:'mc',q:'При каком условии группа гарантированно запускается?',opts:['2 подтверждения','3 заявки','4 подтверждённых студента до 6 числа','Назначен преподаватель'],ans:2,exp:'Минимум 4 подтверждённых студента до 6 числа месяца = гарантированный старт.'},
+    {mod:'Запуск групп',type:'mc',q:'Группа не набрала нужное число студентов к 6 числу. Что происходит?',opts:['Запускается с меньшим числом','Старт переносится, студенты уведомляются','Директор решает индивидуально','Студенты переводятся в другие группы'],ans:1,exp:'Без нужного числа студентов до 6-го — старт переносится на следующий месяц, студентов уведомляют.'},
+    {mod:'Запуск групп',type:'mc',q:'Новый студент добавляется в существующую Trio-группу. Статус:',opts:['Полноправный','DEMO','Временный','Платный пробный'],ans:1,exp:'Новые студенты в существующих группах всегда начинают со статуса DEMO.'},
+    {mod:'Запуск групп',type:'mc',q:'Группа Upper-Intermediate заканчивается через 10 дней. Что делает администратор?',opts:['Ждёт последнего урока','Готовит переход: преподаватель, кабинет, расписание, уведомления, CRM','Сообщает директору за день','Студенты записываются сами'],ans:1,exp:'Переход планируется заранее — без паузы в обучении. Все компоненты согласовываются одновременно.'},
+    {mod:'Запуск групп',type:'mc',q:'Кто инициирует выдачу сертификата после окончания уровня?',opts:['Студент подаёт заявку','Преподаватель автоматически','Преподаватель сообщает администратору, который инициирует процесс','Директор'],ans:2,exp:'Преподаватель информирует администратора по завершении уровня — администратор инициирует и организует выдачу сертификата.'},
+    {mod:'Запуск групп',type:'mc',q:'Администратор получил информацию о завершении уровня от преподавателя. Следующий шаг:',opts:['Ждать запроса от студента','Связаться со студентом, подготовить сертификат и назначить время выдачи','Сообщить директору и ждать','Распечатать сертификат без уведомления'],ans:1,exp:'После получения информации от преподавателя администратор организует процесс выдачи: подготовка, связь со студентом, назначение времени.'},
+    {mod:'Запуск групп',type:'mc',q:'Студент завершил уровень, но не приходил на занятия последние 2 недели. Как действует администратор?',opts:['Выдать сертификат заочно','Связаться со студентом, уточнить ситуацию и договориться о получении','Не выдавать — нарушил посещаемость','Спросить преподавателя'],ans:1,exp:'Администратор связывается со студентом для уточнения ситуации и организации получения сертификата.'},
+    {mod:'Запуск групп',type:'mc',q:'Новая группа набирает студентов. До какого числа нужно набрать минимум?',opts:['3-го числа','6-го числа','10-го числа','15-го числа'],ans:1,exp:'Набор должен завершиться до 6 числа — для старта 8–10 числа.'},
+  ]},
+  {name:'Оплата и финансовая политика',topic:'Блок 7',qs:[
+    {mod:'Оплата',type:'mc',q:'Студент хочет платить по занятиям. Ответ:',opts:['Согласиться','Объяснить: только полная предоплата за 4 недели','Предложить раз в 2 недели','Спросить директора'],ans:1,exp:'Политика оплаты Sevenine — только полная предоплата за 4 недели. Исключений нет.'},
+    {mod:'Оплата',type:'mc',q:'Два недозвона по оплате. Следующий шаг:',opts:['Ждать третьего дня','Написать в Telegram','Сообщить директору немедленно','Позвонить ещё раз'],ans:1,exp:'После 2 недозвонов — сообщение в Telegram. Один недозвон — ещё рано.'},
+    {mod:'Оплата',type:'mc',q:'Студент просит оплатить курс частично: 50% сейчас, остаток через 2 недели. Ответ администратора:',opts:['Принять оплату и оформить запись','Отказать без объяснений','Направить к директору','Дать скидку'],ans:0,exp:'Частичная оплата противоречит политике. Объяснить правило.'},
+    {mod:'Оплата',type:'mc',q:'Почему первый контакт по оплате — звонок?',opts:['Telegram медленнее','Звонок личнее и обязывает — сложнее проигнорировать','Так проще записать разговор','Telegram ненадёжен'],ans:1,exp:'Звонок создаёт ответственность — личный контакт, сложнее игнорировать.'},
+    {mod:'Оплата',type:'mc',q:'"Полная предоплата за 4 недели" означает:',opts:['4 занятия оплачены','Стоимость 4 недель обучения вперёд','4 части оплаты','Аванс за первый урок'],ans:1,exp:'Полная предоплата за 4 недели = вся стоимость следующего месяца оплачивается заранее.'},
+    {mod:'Оплата',type:'mc',q:'Что такое публичная оферта в контексте Sevenine?',opts:['Контракт с подписью','Факт оплаты и обучения = юридическое согласие с условиями без подписи','Реклама условий','Прайс-лист'],ans:1,exp:'Публичная оферта: пользование услугой (оплата + обучение) = акцепт условий без подписи.'},
+    {mod:'Оплата',type:'mc',q:'Студент задерживает оплату вторую неделю. Администратор:',opts:['Ждать','Продолжать звонить, при отсутствии реакции — уведомить директора','Отчислить сразу','Игнорировать'],ans:1,exp:'Продолжать попытки связи, эскалировать директору при отсутствии реакции.'},
+    {mod:'Оплата',type:'mc',q:'Может ли администратор дать скидку без директора?',opts:['Да — до 10%','Нет — скидки согласуются с директором','Да — постоянным клиентам','Да — за просрочку'],ans:1,exp:'Скидки — полномочие директора. Администратор не изменяет стоимость самостоятельно.'},
+    {mod:'Оплата',type:'mc',q:'Акцепт публичной оферты происходит:',opts:['После подписания','В момент оплаты и/или начала обучения','По завершении курса','При первом звонке'],ans:1,exp:'Оплата и/или начало обучения = акцепт оферты.'},
+    {mod:'Оплата',type:'mc',q:'Студент хочет паузу на 2 недели после оплаты. Что с деньгами?',opts:['Возврат за пропущенные дни','Занятия переносятся на конец периода','Оплата не переносится и не возвращается','Решает директор'],ans:3,exp:'Нестандартная ситуация — передаётся директору. Стандартный СОП оплаты не регулирует паузы.'},
+  ]},
+  {name:'Ситуационные кейсы',topic:'Все блоки',qs:[
+    {mod:'Кейсы',type:'mc',q:'Преподаватель заболел за 30 минут до урока. Первый шаг администратора:',opts:['Отменить урок','Найти замену, уведомить студентов, обеспечить урок или перенести','Сообщить директору и ждать','Попросить студентов подождать'],ans:1,exp:'Немедленно: искать замену → уведомить студентов → обеспечить урок или организовать перенос.'},
+    {mod:'Кейсы',type:'mc',q:'Группа Upper-Intermediate заканчивает через 10 дней. Что делает администратор?',opts:['Ничего — студенты запишутся сами','Подготовить переход: преподаватель, кабинет, расписание, уведомить, обновить CRM','Ждать последнего урока','Сообщить директору за день'],ans:1,exp:'Переход планируется заранее — без паузы в обучении.'},
+    {mod:'Кейсы',type:'mc',q:'Студент жалуется на преподавателя. Первый шаг:',opts:['Это не компетенция администратора','Выслушать, зафиксировать, уточнить и передать директору','Защищать преподавателя','Пообещать решение немедленно'],ans:1,exp:'Жалобы на преподавателей — компетенция директора. Администратор выслушивает и эскалирует.'},
+    {mod:'Кейсы',type:'mc',q:'Студент хочет перейти в другую группу. Что проверяется?',opts:['Только желание студента','Место в группе и соответствие уровня','Только мнение преподавателя','Одобрение директора'],ans:1,exp:'Перевод = свободное место + соответствие уровня студента группе.'},
+    {mod:'Кейсы',type:'mc',q:'Студент просит контакт преподавателя. Ответ:',opts:['Дать — это удобнее','Это запрещено. Связь — только через администратора','Дать только Telegram','Спросить преподавателя'],ans:1,exp:'Передача контактов преподавателей запрещена внутренними правилами.'},
+    {mod:'Кейсы',type:'mc',q:'Подходящей группы по расписанию нет. Действия:',opts:['Отказать','Список ожидания или набор новой группы','Только частные уроки','Рекомендовать другую школу'],ans:1,exp:'Клиент не теряется: список ожидания или инициирование нового набора.'},
+    {mod:'Кейсы',type:'mc',q:'Студент пропустил 2 урока без предупреждения. Действия:',opts:['Ждать, пока объявится','Связаться со студентом или родителями','Сразу отчислить','Сообщить только преподавателю'],ans:1,exp:'Без предупреждения = активная связь со стороны администратора.'},
+    {mod:'Кейсы',type:'mc',q:'Родитель: перевести ребёнка 12 лет (Kids Level 2) во взрослую группу. Ответ:',opts:['Перевести','Объяснить условия: 13+ или Kids Level 3','Пробный месяц','Спросить преподавателя'],ans:1,exp:'12 лет и Level 2 — условия не выполнены. Объяснить и назвать условия перехода.'},
+    {mod:'Кейсы',type:'mc',q:'3 депозита к 7-му числу для новой группы. Действие:',opts:['Запустить с 3','Перенести — нужно минимум 4','Добавить студента из другой группы','Тестовый урок'],ans:1,exp:'Без 4 депозитов до 6-го числа — старт переносится. Уведомить студентов.'},
+    {mod:'Кейсы',type:'mc',q:'Студент хочет заниматься, но расписание группы не подходит. Что делает администратор?',opts:['Отказать','Подобрать альтернативную группу или список ожидания','Создать индивидуальное расписание','Предложить когда удобно'],ans:1,exp:'Поиск альтернативной группы или список ожидания на набор с подходящим расписанием.'},
+  ]},
+  {name:'Ценности и позиционирование',topic:'Блок 1 + 14',qs:[
+    {mod:'Позиционирование',type:'mc',q:'Клиент: "У вас дорого." Сильнейший аргумент:',opts:['Скидки для постоянных','Малые группы + единая система + результат — не просто уроки','Хорошие преподаватели','Удобное расписание'],ans:1,exp:'Ключевая ценность: малые группы до 8, единая система стандартов, измеримый результат.'},
+    {mod:'Позиционирование',type:'mc',q:'Почему результат не зависит от конкретного преподавателя?',opts:['Все преподаватели одинаковые','Единая методическая система — не зависит от личности педагога','Директор контролирует каждый урок','Студенты очень мотивированные'],ans:1,exp:'Единая система — главный аргумент. Стандарты одинаковы независимо от педагога.'},
+    {mod:'Позиционирование',type:'mc',q:'Чем отличается подход Sevenine от традиционных языковых школ с большими группами?',opts:['Только уровнем преподавателей','Системным подходом в малых группах — каждый студент получает диалоговую практику и индивидуальное внимание','Наличием онлайн-формата','Широкой географией филиалов'],ans:1,exp:'Системный подход + малые группы = кардинальное отличие от массового обучения, где студент остаётся пассивным слушателем.'},
+    {mod:'Позиционирование',type:'mc',q:'Зачем в Sevenine ограничивают группы до 8 человек?',opts:['Чтобы легче контролировать посещаемость','Для экономии ресурсов школы','Чтобы каждый студент активно участвовал в диалоге и получал достаточно speaking-практики','Чтобы упростить расчёт оплаты преподавателя'],ans:2,exp:'Малые группы = больше speaking-времени на студента, настоящий диалоговый формат, индивидуальное внимание.'},
+    {mod:'Позиционирование',type:'mc',q:'Что означает "метод Сократа" в уроках Sevenine?',opts:['Лекции с вопросами в конце','Обучение через диалог и активное мышление студента — не пассивное слушание','Строгая дисциплина','Самостоятельная работа'],ans:1,exp:'Сократовский метод = активный диалог. Студент думает и отвечает, а не слушает пассивно.'},
+    {mod:'Позиционирование',type:'mc',q:'Что НЕ является ключевым преимуществом Sevenine?',opts:['Единая система','Speaking-программа','Большая сеть филиалов','Отбор преподавателей IELTS 7.5+'],ans:2,exp:'Sevenine — бутик-школа. Сеть филиалов — не преимущество в позиционировании.'},
+    {mod:'Позиционирование',type:'mc',q:'Что такое speaking-программа Sevenine?',opts:['Система свободных разговорных практик без заранее заданных тем','Экстра-занятия для подготовки к IELTS speaking','Структурированная система фраз и смысловых блоков, привязанная к темам Navigate — для автоматизма речи','Дополнительный разговорный клуб после основных уроков'],ans:2,exp:'Speaking-программа: структурированные фразы и смысловые блоки под темы Navigate. Цель — автоматизм и уверенность в речи.'},
+    {mod:'Позиционирование',type:'mc',q:'"Подтверждённые результаты" Sevenine — это:',opts:['Гарантия балла IELTS','Реальный прогресс студентов и IELTS-баллы выпускников','Все получают сертификаты','100% прохождение тестов'],ans:1,exp:'Реальные истории успеха: прогресс студентов и конкретные IELTS-баллы у выпускников.'},
+    {mod:'Позиционирование',type:'mc',q:'Когда называть стоимость клиенту?',opts:['В самом начале','После выявления потребности и презентации ценности','В конце, после записи','Только если спросит'],ans:1,exp:'Цена называется после ценности — чтобы клиент понимал, за что платит.'},
+    {mod:'Позиционирование',type:'mc',q:'Ключевое отличие Sevenine от школ с большими группами:',opts:['Только цена','Системный подход в малых группах vs. массовое обучение','Количество преподавателей','Расположение'],ans:1,exp:'Системный подход + малые группы = прямая противоположность массовому обучению.'},
+  ]},
+  {name:'Итоговый обзор',topic:'Все блоки',qs:[
+    {mod:'Итог',type:'mc',q:'Жалоба клиента на преподавателя. Действия:',opts:['Самостоятельно решить','Выслушать → зафиксировать → передать директору','Отрицать проблему','Переключить преподавателя'],ans:1,exp:'Жалобы на преподавателей — компетенция директора.'},
+    {mod:'Итог',type:'mc',q:'Студент окончил Upper-Int. Кто инициирует сертификат?',opts:['Преподаватель','Студент','Администратор','Директор'],ans:2,exp:'Администратор отслеживает завершение и инициирует процесс выдачи сертификата.'},
+    {mod:'Итог',type:'mc',q:'Ключевой критерий распределения по группам:',opts:['Возраст','Грамматика','Speaking','Желание студента'],ans:2,exp:'Speaking — главный критерий.'},
+    {mod:'Итог',type:'mc',q:'Депозит возвращается если:',opts:['Студент не понравился урок','Группа не запустилась','Студент пришёл и ушёл','Любая причина'],ans:1,exp:'Группа не запустилась = депозит возвращается.'},
+    {mod:'Итог',type:'mc',q:'После 2 недозвонов по оплате:',opts:['Ждать','Telegram-сообщение','Директору','Ещё звонки'],ans:1,exp:'После 2 недозвонов — Telegram.'},
+    {mod:'Итог',type:'mc',q:'Скидки — полномочие:',opts:['Администратора до 10%','Директора','Любого сотрудника','Не существуют'],ans:1,exp:'Скидки согласовываются только с директором.'},
+    {mod:'Итог',type:'mc',q:'* у лида в "Наборе" означает:',opts:['VIP','Депозит + аккаунт','Устное согласие','Рекомендация'],ans:1,exp:'Звёздочка = депозит + аккаунт в системе.'},
+    {mod:'Итог',type:'mc',q:'Минимум IELTS для стандартного IELTS-курса:',opts:['Pre-Int','Intermediate','Upper-Int','Advanced'],ans:2,exp:'Upper-Intermediate — стандартный минимум.'},
+    {mod:'Итог',type:'mc',q:'Клиент 45 лет, цель — "для себя". Программа:',opts:['IELTS','General English по уровню после тестирования','Kids','Только онлайн'],ans:1,exp:'General English подходит для любой цели и возраста.'},
+    {mod:'Итог',type:'mc',q:'Структура диалога с новым клиентом:',opts:['Цена → запись','Знакомство → потребность → презентация → ответы → демо/тест','Уровень → курс → оплата','Презентация → цена → запись'],ans:1,exp:'Знакомство → потребность → презентация → ответы → демо/тестирование.'},
+  ]},
+];
+
+// ════════════════════════════════════════
+let S = {
+  role:null, mode:null,
+  questions:[], current:0, correct:0,
+  openAnswers:{},   // index → text for open questions
+  multiSelected:{}, // index → Set of chosen indices
+  certAnswers:[],   // index → chosen index (mc/calc) | Set (multi) | string (open)
+  openGradesDone:false, openCorrect:0,
+  timerInterval:null, timeLeft:0,
+  pwAttempts:3, pwLockedUntil:null,
+  quizIdx:null,
+  totalMC:0,
+};
+
+// ════════════════════════════════════════
+//  NAVIGATION
+// ════════════════════════════════════════
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function selectRole(role){
+  S.role=role;
+  const isTutor=role==='tutor';
+  document.getElementById('hub-badge').textContent=isTutor?'Tutor Track':'Admin Track';
+  document.getElementById('hub-icon').className='hub-icon '+role;
+  document.getElementById('hub-icon').textContent=isTutor?'🎓':'🗂️';
+  document.getElementById('hub-title').textContent=isTutor?'Tutor Certification Track':'Трек Сертификации Администратора';
+  document.getElementById('hub-sub').textContent=isTutor
+    ?'Train on SOP material, then take the official test'
+    :'Потренируйтесь на материале СОП, затем пройдите официальный тест';
+  document.getElementById('hub-train-title').textContent=isTutor?'Training Mode':'Режим обучения';
+  document.getElementById('hub-train-desc').textContent=isTutor
+    ?'10 topic-based quizzes. Instant feedback. Unlimited attempts.':'10 тематических тестов. Мгновенная обратная связь. Без ограничений.';
+  document.getElementById('hub-train-meta').textContent=isTutor?'No password · 10 quizzes':'Без пароля · 10 тестов';
+  const cc=document.getElementById('hub-cert-card');
+  cc.className='hub-card cert '+role;
+  document.getElementById('hub-cert-title').textContent=isTutor?'Certification Test':'Сертификационный тест';
+  document.getElementById('hub-cert-desc').textContent=isTutor
+    ?'Official SOP test. Password required. 95% to pass (45/47).'
+    :'Официальный тест СОП. Требуется пароль. Проходной балл: 35/39.';
+  document.getElementById('hub-cert-meta').textContent=isTutor
+    ?'Password required · 30 min · 45/47 to pass'
+    :'Требуется пароль · 30 мин · 35/39 для прохождения';
+  goTo('hub');
+}
+
+function buildQuizSelector(){
+  const quizzes=S.role==='tutor'?TUTOR_TRAINING_QUIZZES:ADMIN_TRAINING_QUIZZES;
+  const isTutor=S.role==='tutor';
+  document.getElementById('qs-badge').textContent=isTutor?'Training Mode':'Режим обучения';
+  document.getElementById('qs-title').textContent=isTutor?'Choose a Training Quiz':'Выберите тренировочный тест';
+  document.getElementById('qs-sub').textContent=isTutor
+    ?'Each quiz covers a specific SOP topic — 10 questions each'
+    :'Каждый тест охватывает отдельную тему СОП — по 10 вопросов';
+  const grid=document.getElementById('quiz-grid');
+  grid.innerHTML='';
+  quizzes.forEach((q,i)=>{
+    const tile=document.createElement('div');
+    tile.className='quiz-tile '+S.role;
+    tile.innerHTML=`<div class="quiz-tile-num">Quiz ${i+1}</div>
+      <div class="quiz-tile-name">${q.name}</div>
+      <div class="quiz-tile-meta">${q.topic} · 10 ${isTutor?'questions':'вопросов'}</div>`;
+    tile.onclick=()=>startTrainingQuiz(i);
+    grid.appendChild(tile);
+  });
+}
+
+// ════════════════════════════════════════
+//  PASSWORD
+// ════════════════════════════════════════
+function goToPassword(){
+  const isTutor=S.role==='tutor';
+  document.getElementById('pw-accent').className='pw-accent '+S.role;
+  document.getElementById('pw-btn').className='pw-btn '+S.role;
+  document.getElementById('pw-title').textContent=isTutor?'Authorisation Required':'Требуется авторизация';
+  document.getElementById('pw-sub').textContent=isTutor
+    ?'Enter the password provided by your manager to unlock the official test.'
+    :'Введите пароль авторизации, предоставленный вашим руководителем.';
+  document.getElementById('pw-btn').textContent=isTutor?'Unlock Test':'Разблокировать тест';
+  document.getElementById('pw-input').value='';
+  document.getElementById('pw-error').style.display='none';
+  checkLockout();
+  goTo('password');
+}
+function togglePw(){
+  const i=document.getElementById('pw-input');
+  i.type=i.type==='password'?'text':'password';
+}
+function checkLockout(){
+  const el=document.getElementById('pw-lockout');
+  const btn=document.getElementById('pw-btn');
+  const inp=document.getElementById('pw-input');
+  if(S.pwLockedUntil&&Date.now()<S.pwLockedUntil){
+    const rem=Math.ceil((S.pwLockedUntil-Date.now())/1000);
+    const isTutor=S.role==='tutor';
+    el.style.display='block';
+    el.textContent=isTutor?`Too many failed attempts. Try again in ${rem}s.`:`Слишком много попыток. Подождите ${rem}с.`;
+    btn.disabled=inp.disabled=true;
+    setTimeout(checkLockout,1000);
+  } else {
+    el.style.display='none';
+    btn.disabled=inp.disabled=false;
+    updateAttemptsLabel();
+  }
+}
+function updateAttemptsLabel(){
+  const isTutor=S.role==='tutor';
+  document.getElementById('pw-attempts').textContent=isTutor
+    ?`${S.pwAttempts} attempt${S.pwAttempts!==1?'s':''} remaining`
+    :`Осталось попыток: ${S.pwAttempts}`;
+}
+async function checkPassword(){
+  if(S.pwLockedUntil&&Date.now()<S.pwLockedUntil)return;
+  const val=document.getElementById('pw-input').value;
+  const hash=await sha256(val);
+  if(hash===HASHES[S.role]){S.pwAttempts=3;startCert();}
+  else{
+    S.pwAttempts--;
+    const isTutor=S.role==='tutor';
+    const err=document.getElementById('pw-error');
+    err.style.display='block';
+    err.textContent=isTutor
+      ?`Incorrect password. ${S.pwAttempts} attempt${S.pwAttempts!==1?'s':''} remaining.`
+      :`Неверный пароль. Осталось попыток: ${S.pwAttempts}.`;
+    if(S.pwAttempts<=0){S.pwLockedUntil=Date.now()+5*60*1000;S.pwAttempts=3;checkLockout();}
+    else updateAttemptsLabel();
+    document.getElementById('pw-input').value='';
+  }
+}
+async function sha256(msg){
+  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+// ════════════════════════════════════════
+//  QUIZ ENGINE
+// ════════════════════════════════════════
+function startTrainingQuiz(idx){
+  S.mode='training'; S.quizIdx=idx;
+  const bank=S.role==='tutor'?TUTOR_TRAINING_QUIZZES:ADMIN_TRAINING_QUIZZES;
+  S.questions=[...bank[idx].qs];
+  S.current=0; S.correct=0; S.openAnswers={}; S.multiSelected={};
+  setupQuizUI();
+  goTo('quiz');
+  renderQ();
+}
+function startCert(){
+  S.mode='cert'; S.quizIdx=null;
+  S.questions=S.role==='tutor'?[...TUTOR_CERT]:[...ADMIN_CERT];
+  S.current=0; S.correct=0; S.openAnswers={}; S.multiSelected={}; S.certAnswers=[]; S.openGradesDone=false; S.openCorrect=0;
+  S.totalMC=S.questions.filter(q=>q.type!=='open').length;
+  setupQuizUI();
+  goTo('quiz');
+  renderQ();
+  startTimer(30*60);
+}
+function setupQuizUI(){
+  const isTutor=S.role==='tutor';
+  const isCert=S.mode==='cert';
+  document.getElementById('quiz-badge').textContent=isCert
+    ?(isTutor?'Certification Test':'Сертификационный тест')
+    :(isTutor?'Training Mode':'Режим обучения');
+  const fill=document.getElementById('quiz-prog-fill');
+  fill.className='quiz-progress-fill '+S.role;
+  const nb=document.getElementById('quiz-next-btn');
+  nb.className='quiz-nav-btn primary'+(S.role==='admin'?' admin-col':'');
+  document.getElementById('training-score-strip').classList.toggle('hidden',isCert);
+  const tb=document.getElementById('quiz-timer-box');
+  if(isCert)tb.classList.remove('hidden'); else tb.classList.add('hidden');
+}
+
+function renderQ(){
+  const q=S.questions[S.current];
+  const total=S.questions.length;
+  const isTutor=S.role==='tutor';
+  const isCert=S.mode==='cert';
+  const letters=['A','B','C','D','E'];
+
+  document.getElementById('quiz-q-label').textContent=isTutor
+    ?`Question ${S.current+1} of ${total}`:`Вопрос ${S.current+1} из ${total}`;
+  document.getElementById('quiz-prog-fill').style.width=((S.current/total)*100)+'%';
+  document.getElementById('quiz-module-tag').textContent=q.mod;
+  document.getElementById('quiz-module-tag').className='quiz-module-tag '+S.role;
+  document.getElementById('quiz-q-num').textContent=`Q${S.current+1}`;
+  document.getElementById('quiz-q-text').textContent=q.q;
+  document.getElementById('quiz-feedback').style.display='none';
+  document.getElementById('quiz-feedback').textContent='';
+
+  // Multi-select note
+  const mnw=document.getElementById('multi-note-wrap');
+  mnw.innerHTML='';
+  if(q.type==='multi'){
+    const mn=document.createElement('div');
+    mn.className='multi-note';
+    mn.textContent=isTutor?'✦ Select ALL correct answers':'✦ Выберите ВСЕ правильные ответы';
+    mnw.appendChild(mn);
+  }
+
+  // Options / Open
+  const wrap=document.getElementById('quiz-options-wrap');
+  wrap.innerHTML='';
+
+  if(q.type==='open'){
+    const ow=document.createElement('div');
+    ow.className='open-q-wrap';
+    const lbl=document.createElement('span');
+    lbl.className='open-q-label';
+    lbl.textContent=isTutor?'Your answer:':'Ваш ответ:';
+    const ta=document.createElement('textarea');
+    ta.className='open-q-textarea';
+    ta.id='open-ta-'+S.current;
+    ta.placeholder=isTutor?'Write your answer here…':'Напишите ваш ответ здесь…';
+    if(S.openAnswers[S.current]) ta.value=S.openAnswers[S.current];
+    ta.oninput=()=>{
+      S.openAnswers[S.current]=ta.value;
+      document.getElementById('quiz-next-btn').disabled=ta.value.trim().length<3;
+    };
+    const hint=document.createElement('div');
+    hint.className='open-q-hint';
+    hint.textContent=isTutor
+      ?'This answer will be reviewed by your manager.'
+      :'Этот ответ будет проверен вашим руководителем.';
+    const refDiv=document.createElement('div');
+    refDiv.className='open-q-ref';
+    refDiv.id='open-ref-'+S.current;
+    if(q.refAnswer){
+      const rt=document.createElement('div'); rt.className='open-q-ref-title';
+      rt.textContent=isTutor?'Reference answer:':'Эталонный ответ:';
+      const rb=document.createElement('div'); rb.textContent=q.refAnswer;
+      refDiv.appendChild(rt); refDiv.appendChild(rb);
+    }
+    ow.appendChild(lbl); ow.appendChild(ta); ow.appendChild(hint);
+    if(!isCert&&q.refAnswer) ow.appendChild(refDiv);
+    wrap.appendChild(ow);
+    // Next btn state
+    const nb=document.getElementById('quiz-next-btn');
+    nb.disabled=(S.openAnswers[S.current]||'').trim().length<3;
+    nb.textContent=S.current===S.questions.length-1
+      ?(isTutor?'Submit Test ✓':'Отправить тест ✓')
+      :(isTutor?'Next →':'Далее →');
+    if(!isCert){
+      // Show ref on reveal
+      ta.onblur=()=>{
+        if(ta.value.trim().length>2&&q.refAnswer) refDiv.style.display='block';
+      };
+    }
+  } else {
+    // MC or multi
+    const optDiv=document.createElement('div');
+    optDiv.className='quiz-options';
+    if(!S.multiSelected[S.current]) S.multiSelected[S.current]=new Set();
+    q.opts.forEach((opt,i)=>{
+      const btn=document.createElement('button');
+      btn.className='quiz-option';
+      btn.dataset.idx=i;
+      const letter=document.createElement('span');
+      letter.className='opt-letter'; letter.textContent=letters[i];
+      const text=document.createElement('span');
+      text.className='opt-text'; text.textContent=opt;
+      btn.appendChild(letter); btn.appendChild(text);
+      if(S.multiSelected[S.current].has(i)) btn.classList.add('selected');
+      btn.onclick=()=>selectOpt(i,q,optDiv);
+      optDiv.appendChild(btn);
+    });
+    wrap.appendChild(optDiv);
+    document.getElementById('quiz-next-btn').disabled=S.multiSelected[S.current].size===0;
+    document.getElementById('quiz-next-btn').textContent=S.current===S.questions.length-1
+      ?(isTutor?'Submit Test ✓':'Отправить тест ✓')
+      :(isTutor?'Next →':'Далее →');
+  }
+
+  if(!isCert){
+    document.getElementById('train-score-label').textContent=isTutor?'Score so far':'Счёт';
+    document.getElementById('train-score-val').textContent=`${S.correct} / ${S.current}`;
+  }
+
+  document.getElementById('quiz-card').classList.add('fade-in');
+  setTimeout(()=>document.getElementById('quiz-card').classList.remove('fade-in'),300);
+}
+
+function selectOpt(idx,q,container){
+  const isTutor=S.role==='tutor';
+  const isCert=S.mode==='cert';
+  const nb=document.getElementById('quiz-next-btn');
+
+  if(isCert){
+    // Cert: select only, no reveal
+    const sel=S.multiSelected[S.current];
+    if(q.type==='multi'){
+      if(sel.has(idx)) sel.delete(idx); else sel.add(idx);
+      container.querySelectorAll('.quiz-option').forEach((b,i)=>{
+        b.classList.toggle('selected',sel.has(i));
+        b.querySelector('.opt-letter').style='';
+        if(sel.has(i)) b.querySelector('.opt-letter').style.background=getComputedStyle(document.documentElement).getPropertyValue('--blue');
+      });
+    } else {
+      sel.clear(); sel.add(idx);
+      container.querySelectorAll('.quiz-option').forEach((b,i)=>{
+        b.classList.toggle('selected',i===idx);
+      });
+    }
+    nb.disabled=sel.size===0;
+  } else {
+    // Training: reveal immediately
+    container.querySelectorAll('.quiz-option').forEach(b=>b.disabled=true);
+    const isMulti=q.type==='multi';
+    let isCorrect=false;
+
+    if(isMulti){
+      const sel=S.multiSelected[S.current];
+      if(sel.has(idx)) sel.delete(idx); else sel.add(idx);
+      // Check if selection is complete
+      container.querySelectorAll('.quiz-option').forEach((b,i)=>{
+        b.classList.toggle('selected',sel.has(i));
+      });
+      container.querySelectorAll('.quiz-option').forEach(b=>b.disabled=false);
+      // Don't reveal until "Check" — use next as check
+      nb.disabled=sel.size===0;
+      nb.textContent=isTutor?'Check ✓':'Проверить ✓';
+      nb.onclick=()=>revealMulti(q,container);
+      return;
+    } else {
+      isCorrect=idx===q.ans;
+      container.querySelectorAll('.quiz-option').forEach((b,i)=>{
+        if(i===q.ans) b.classList.add('correct');
+        else if(i===idx&&!isCorrect) b.classList.add('wrong');
+      });
+    }
+
+    if(isCorrect) S.correct++;
+    const fb=document.getElementById('quiz-feedback');
+    fb.className='quiz-feedback '+(isCorrect?'correct':'wrong');
+    fb.style.display='block';
+    fb.textContent=isCorrect
+      ?`✓ ${isTutor?'Correct':'Правильно'}! ${q.exp||''}`
+      :`✗ ${isTutor?'Incorrect':'Неверно'}. ${q.exp||''}`;
+    nb.disabled=false;
+    nb.textContent=S.current===S.questions.length-1
+      ?(isTutor?'View Results →':'Результаты →')
+      :(isTutor?'Next →':'Далее →');
+    nb.onclick=handleNext;
+    document.getElementById('train-score-val').textContent=`${S.correct} / ${S.current+1}`;
+  }
+}
+
+function revealMulti(q,container){
+  const isTutor=S.role==='tutor';
+  const sel=S.multiSelected[S.current];
+  const correctSet=new Set(q.ans);
+  container.querySelectorAll('.quiz-option').forEach((b,i)=>{
+    b.disabled=true;
+    b.classList.remove('selected');
+    if(correctSet.has(i)&&sel.has(i)) b.classList.add('correct');
+    else if(!correctSet.has(i)&&sel.has(i)) b.classList.add('wrong');
+    else if(correctSet.has(i)&&!sel.has(i)) b.classList.add('missed');
+  });
+  const isCorrect=[...correctSet].every(i=>sel.has(i))&&[...sel].every(i=>correctSet.has(i));
+  if(isCorrect) S.correct++;
+  const fb=document.getElementById('quiz-feedback');
+  fb.className='quiz-feedback '+(isCorrect?'correct':'wrong');
+  fb.style.display='block';
+  fb.textContent=isCorrect
+    ?`✓ ${isTutor?'Correct':'Правильно'}! ${q.exp||''}`
+    :`✗ ${isTutor?'Incorrect':'Неверно'}. ${q.exp||''}`;
+  const nb=document.getElementById('quiz-next-btn');
+  nb.disabled=false;
+  nb.textContent=S.current===S.questions.length-1
+    ?(isTutor?'View Results →':'Результаты →')
+    :(isTutor?'Next →':'Далее →');
+  nb.onclick=handleNext;
+  document.getElementById('train-score-val').textContent=`${S.correct} / ${S.current+1}`;
+}
+
+function handleNext(){
+  const q=S.questions[S.current];
+  const isCert=S.mode==='cert';
+
+  if(isCert){
+    // Record what was chosen
+    if(q.type==='open'){
+      S.certAnswers[S.current]=S.openAnswers[S.current]||'';
+    } else if(q.type==='multi'){
+      S.certAnswers[S.current]=new Set(S.multiSelected[S.current]||new Set());
+      const sel=S.multiSelected[S.current]||new Set();
+      const correct=new Set(q.ans);
+      if([...correct].every(i=>sel.has(i))&&[...sel].every(i=>correct.has(i))) S.correct++;
+    } else {
+      const sel=[...(S.multiSelected[S.current]||new Set())];
+      const chosen=sel[0]??-1;
+      S.certAnswers[S.current]=chosen;
+      if(chosen===q.ans) S.correct++;
+    }
+  }
+
+  S.current++;
+  if(S.current>=S.questions.length){
+    showResult();
+  } else {
+    renderQ();
+    if(isCert){
+      document.getElementById('quiz-next-btn').onclick=handleNext;
+    }
+  }
+}
+
+function confirmQuit(){
+  const isTutor=S.role==='tutor';
+  if(confirm(isTutor?'Quit? Your progress will be lost.':'Выйти? Прогресс будет потерян.')){
+    clearInterval(S.timerInterval);
+    if(S.mode==='training') goTo('quiz-select');
+    else goTo('hub');
+  }
+}
+
+// ════════════════════════════════════════
+//  TIMER
+// ════════════════════════════════════════
+function startTimer(secs){
+  S.timeLeft=secs; clearInterval(S.timerInterval); updateTimer();
+  S.timerInterval=setInterval(()=>{
+    S.timeLeft--; updateTimer();
+    if(S.timeLeft<=0){clearInterval(S.timerInterval);showResult(true);}
+  },1000);
+}
+function updateTimer(){
+  const m=Math.floor(S.timeLeft/60), s=S.timeLeft%60;
+  document.getElementById('quiz-timer').textContent=`${m}:${s.toString().padStart(2,'0')}`;
+  const box=document.getElementById('quiz-timer-box');
+  box.className='quiz-timer'+(S.timeLeft<60?' danger':S.timeLeft<180?' warning':'');
+}
+
+// ════════════════════════════════════════
+//  RESULT
+// ════════════════════════════════════════
+function showResult(timeout=false){
+  clearInterval(S.timerInterval);
+  const isTutor=S.role==='tutor';
+  const isCert=S.mode==='cert';
+  const total=S.questions.length;
+  const openCount=S.questions.filter(q=>q.type==='open').length;
+  const mcTotal=total-openCount;
+  const correct=S.correct;
+  const wrong=mcTotal-correct;
+  const pct=mcTotal>0?Math.round((correct/mcTotal)*100):0;
+
+  // Pass thresholds
+  let passed=false;
+  if(isCert){
+    if(isTutor) passed=correct>=45; // 45/47
+    else passed=correct>=35;        // 35/39 (MC only)
+  } else {
+    passed=pct>=70;
+  }
+
+  // Accents
+  document.getElementById('result-accent').className='result-accent '+(passed?'pass':'fail');
+  document.getElementById('result-stamp').className='result-stamp '+(passed?'pass':'fail');
+  document.getElementById('result-stamp').textContent=passed?'✅':'❌';
+
+  const vEl=document.getElementById('result-verdict');
+  const sEl=document.getElementById('result-sub');
+  if(isCert){
+    if(passed){
+      vEl.textContent=isTutor?'✓ Certified':'✓ Сертифицирован';
+      vEl.className='result-verdict pass';
+      sEl.textContent=isTutor
+        ?'You passed the official SOP certification test. You are eligible to start work.'
+        :'Вы прошли официальный тест. Вы допущены к работе.';
+    } else {
+      vEl.textContent=isTutor?'✗ Not Yet':'✗ Не пройден';
+      vEl.className='result-verdict fail';
+      sEl.textContent=timeout
+        ?(isTutor?'Time is up. Review SOP materials and retake within 7 days.':'Время истекло. Изучите СОП и повторите попытку в течение 7 дней.')
+        :(isTutor?'Score below 95%. Review the SOP materials. Retake within 7 days.':'Результат ниже проходного. Изучите СОП. Повторная попытка в течение 7 дней.');
+    }
+  } else {
+    vEl.textContent=isTutor?'Training Complete':'Обучение завершено';
+    vEl.className='result-verdict '+(passed?'pass':'fail');
+    sEl.textContent=isTutor
+      ?`${correct}/${mcTotal} correct. ${openCount>0?'Open questions shown for review. ':''}Review and try again.`
+      :`Правильных: ${correct}/${mcTotal}. ${openCount>0?'Открытые вопросы — для самопроверки. ':''}Повторите при необходимости.`;
+  }
+
+  // Ring
+  const ring=document.getElementById('result-ring');
+  const r=48; const circ=2*Math.PI*r;
+  const stroke=passed?'#34C759':pct>=60?'#FF9500':'#FF3B30';
+  ring.innerHTML=`<svg style="position:absolute;top:0;left:0" width="110" height="110" viewBox="0 0 110 110">
+    <circle cx="55" cy="55" r="${r}" fill="none" stroke="${passed?'rgba(52,199,89,.15)':'rgba(255,59,48,.1)'}" stroke-width="8"/>
+    <circle cx="55" cy="55" r="${r}" fill="none" stroke="${stroke}" stroke-width="8"
+      stroke-dasharray="${circ}" stroke-dashoffset="${circ-(pct/100)*circ}"
+      stroke-linecap="round" transform="rotate(-90 55 55)"
+      style="transition:stroke-dashoffset 1s ease"/></svg>
+    <div style="position:relative;z-index:1;text-align:center">
+      <div class="result-score-num">${correct}/${mcTotal}</div>
+      <div class="result-score-label">${isTutor?'SCORE':'РЕЗУЛЬТАТ'}</div>
+    </div>`;
+
+  document.getElementById('res-correct').textContent=correct;
+  document.getElementById('res-correct-lbl').textContent=isTutor?'Correct':'Правильно';
+  document.getElementById('res-wrong').textContent=wrong;
+  document.getElementById('res-wrong-lbl').textContent=isTutor?'Wrong':'Неверно';
+  document.getElementById('res-total').textContent=mcTotal;
+  document.getElementById('res-total-lbl').textContent=isTutor?'Auto-scored':'Авто-оценка';
+
+  // Open question notice
+  const oqn=document.getElementById('open-q-notice');
+  if(isCert&&openCount>0){
+    oqn.classList.remove('hidden');
+    oqn.innerHTML=`<strong>${isTutor?'MANAGER REVIEW REQUIRED':'ТРЕБУЕТСЯ ПРОВЕРКА РУКОВОДИТЕЛЯ'}</strong>
+      ${isTutor
+        ?`${openCount} open-ended question${openCount>1?'s':''} require manual review by your manager. The auto-score above covers the ${mcTotal} multiple-choice questions only.`
+        :`${openCount} открыт${openCount>1?'ых':'ый'} вопрос${openCount>1?'а':''} требует ручной проверки руководителем. Автоматически проверены только ${mcTotal} тестовых вопросов.`}`;
+  } else oqn.classList.add('hidden');
+
+  // Message
+  const msgEl=document.getElementById('result-msg');
+  if(isCert){
+    if(passed){
+      msgEl.textContent=isTutor
+        ?`You scored ${correct}/${mcTotal} on the auto-graded section. Show this to your manager to confirm your onboarding status.`
+        :`Авто-оценка: ${correct}/${mcTotal}. Покажите результат руководителю для подтверждения допуска.`;
+    } else {
+      msgEl.textContent=isTutor
+        ?`You scored ${correct}/${mcTotal} (need 45). Re-read all SOP modules and request a new authorised attempt within 7 days.`
+        :`Результат: ${correct}/${mcTotal} (нужно 35). Перечитайте СОП и запросите повторный тест в течение 7 дней.`;
+    }
+  } else {
+    msgEl.textContent=pct>=80
+      ?(isTutor?'Great score! You seem well-prepared for the certification test.':'Отличный результат! Вы готовы к сертификационному тесту.')
+      :(isTutor?'Keep reviewing the SOPs and try the quiz again.':'Изучите СОП дополнительно и попробуйте снова.');
+  }
+
+  // Actions
+  const actEl=document.getElementById('result-actions');
+  actEl.innerHTML='';
+
+  // Open grading button — cert only, if has open questions and not yet graded
+  if(isCert && openCount>0 && !S.openGradesDone){
+    const ogb=document.createElement('button');
+    ogb.className='result-btn primary'+(S.role==='admin'?' admin-col':'');
+    ogb.textContent=isTutor?'📝 Grade Open Questions':'📝 Проверить открытые вопросы';
+    ogb.onclick=showOpenGrade;
+    actEl.appendChild(ogb);
+  }
+  // Review wrong answers button — cert only (only if open grades done OR no open questions)
+  if(isCert && (openCount===0 || S.openGradesDone)){
+    const rb=document.createElement('button');
+    rb.className='result-btn ghost';
+    rb.textContent=isTutor?'📋 Review Wrong Answers':'📋 Разобрать ошибки';
+    rb.onclick=showReview;
+    actEl.appendChild(rb);
+  }
+
+  if(!isCert){
+    const rb=document.createElement('button');
+    rb.className='result-btn primary'+(S.role==='admin'?' admin-col':'');
+    rb.textContent=isTutor?'↩ Try This Quiz Again':'↩ Пройти снова';
+    rb.onclick=()=>startTrainingQuiz(S.quizIdx);
+    actEl.appendChild(rb);
+    const qb=document.createElement('button');
+    qb.className='result-btn ghost';
+    qb.textContent=isTutor?'← All Quizzes':'← Все тесты';
+    qb.onclick=()=>goTo('quiz-select');
+    actEl.appendChild(qb);
+  }
+  const hb=document.createElement('button');
+  hb.className='result-btn ghost';
+  hb.textContent=isTutor?'← Back to Hub':'← Главное меню';
+  hb.onclick=()=>goTo('hub');
+  actEl.appendChild(hb);
+
+  goTo('result');
+}
+
+// ════════════════════════════════════════
+//  INTERCEPT goTo quiz-select to build grid
+// ════════════════════════════════════════
+const _origGoTo=goTo;
+window.goTo=function(id){
+  if(id==='quiz-select') buildQuizSelector();
+  _origGoTo(id);
+};
+</script>
+
+
+<!-- ══ SCREEN: OPEN QUESTION GRADING ══ -->
+<div id="screen-open-grade" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-brand"><span class="bk">Seve</span><span class="bb">n</span><span class="bk">ine</span></div>
+    <div class="top-bar-right">
+      <span id="og-badge" class="doc-badge">Manager Review</span>
+      <button class="back-btn" onclick="goTo('result')" id="og-back-btn">← Back</button>
+    </div>
+  </div>
+  <div class="main">
+    <div class="og-wrap fade-in">
+
+      <div class="og-header-card">
+        <div class="og-eyebrow" id="og-eyebrow">Open Question Review</div>
+        <div class="og-header-title" id="og-title">Mark each answer</div>
+        <div class="og-header-sub" id="og-sub">Tap ✓ Correct or ✗ Incorrect for each answer. The total score updates automatically below.</div>
+        <div class="og-mc-pill" id="og-mc-score">Auto-graded: 0 / 0</div>
+      </div>
+
+      <div id="og-list"></div>
+
+      <div class="og-score-panel">
+        <div class="og-score-eyebrow" id="og-score-eyebrow">Total Score</div>
+        <div class="og-score-big" id="og-score-big">—</div>
+        <div class="og-score-denom" id="og-score-denom"></div>
+        <div class="og-pass-bar"><div class="og-pass-fill" id="og-pass-fill" style="width:0%"></div></div>
+        <div class="og-verdict-pill pending" id="og-verdict-pill">Pending all grades</div>
+      </div>
+
+      <div class="og-actions">
+        <button class="quiz-nav-btn ghost" id="og-back-btn2" onclick="goTo('result')">← Back</button>
+        <button class="quiz-nav-btn primary" id="og-confirm-btn" onclick="confirmOpenGrades()" disabled>Confirm ✓</button>
+      </div>
+
+    </div>
+  </div>
+  <div class="footer">
+    <div class="footer-brand"><span class="bk">Seve</span><span class="bb">n</span><span class="bk">ine</span></div>
+    <span class="footer-meta">@sevenineuz · English School · Tashkent</span>
+  </div>
+</div>
+
+
+<!-- ══ SCREEN: REVIEW (cert wrong answers) ══ -->
+<div id="screen-review" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-brand"><span class="bk">Seve</span><span class="bb">n</span><span class="bk">ine</span></div>
+    <div class="top-bar-right">
+      <span id="review-badge" class="doc-badge">Review</span>
+      <button class="back-btn" id="review-back-btn" onclick="goTo('result')">← Back</button>
+    </div>
+  </div>
+  <div class="main">
+    <div class="quiz-wrap fade-in">
+      <div style="text-align:center;margin-bottom:28px">
+        <div style="font-family:'DM Serif Display',serif;font-size:26px;color:var(--black);margin-bottom:6px" id="review-title">Wrong Answers</div>
+        <div style="font-size:13px;color:var(--g3);line-height:1.5" id="review-sub">Questions you answered incorrectly — with correct answers and explanations.</div>
+      </div>
+      <div id="review-list"></div>
+      <div style="display:flex;justify-content:center;margin-top:8px">
+        <button class="quiz-nav-btn ghost" id="review-back-bottom" onclick="goTo('result')" style="padding:12px 28px">← Back to Results</button>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="footer-brand"><span class="bk">Seve</span><span class="bb">n</span><span class="bk">ine</span></div>
+    <span class="footer-meta">@sevenineuz · English School · Tashkent</span>
+  </div>
+</div>
+
+<script>
+
+// ════════════════════════════════════════
+//  OPEN QUESTION GRADING
+// ════════════════════════════════════════
+var S_openGrades = {};  // qIdx → true/false
+
+function showOpenGrade(){
+  var isTutor = S.role === 'tutor';
+  var isAdmin = !isTutor;
+  var openQs  = [];
+  for(var i=0; i<S.questions.length; i++){
+    if(S.questions[i].type === 'open') openQs.push({q:S.questions[i], i:i});
+  }
+  if(openQs.length === 0){ showFinalResult(); return; }
+
+  var accentClass = isTutor ? 'tutor' : 'admin';
+  var passN       = isTutor ? 45 : 35;
+  var totalQ      = S.totalMC + openQs.length;
+
+  // Header
+  document.getElementById('og-badge').textContent      = isTutor ? 'Manager Review' : 'Проверка руководителем';
+  document.getElementById('og-eyebrow').textContent    = isTutor ? 'Open Question Review' : 'Проверка открытых вопросов';
+  document.getElementById('og-eyebrow').className      = 'og-eyebrow ' + accentClass;
+  document.getElementById('og-title').textContent      = isTutor ? 'Mark each answer' : 'Оцените каждый ответ';
+  document.getElementById('og-sub').textContent        = isTutor
+    ? 'Tap \u2713 Correct or \u2717 Incorrect for each open-ended answer. Total score updates live.'
+    : '\u041d\u0430\u0436\u043c\u0438\u0442\u0435 \u2713 \u0412\u0435\u0440\u043d\u043e \u0438\u043b\u0438 \u2717 \u041d\u0435\u0432\u0435\u0440\u043d\u043e \u0434\u043b\u044f \u043a\u0430\u0436\u0434\u043e\u0433\u043e \u043e\u0442\u0432\u0435\u0442\u0430. \u0418\u0442\u043e\u0433 \u043e\u0431\u043d\u043e\u0432\u043b\u044f\u0435\u0442\u0441\u044f \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438.';
+  document.getElementById('og-mc-score').textContent  = isTutor
+    ? 'Auto-graded (MC): ' + S.correct + ' / ' + S.totalMC
+    : '\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438: ' + S.correct + ' / ' + S.totalMC;
+  document.getElementById('og-score-eyebrow').textContent = isTutor ? 'Total Score' : '\u0418\u0442\u043e\u0433\u043e\u0432\u044b\u0439 \u0431\u0430\u043b\u043b';
+  document.getElementById('og-score-denom').textContent   = isTutor
+    ? 'Pass: ' + passN + ' out of ' + totalQ
+    : '\u041f\u0440\u043e\u0445\u043e\u0434\u043d\u043e\u0439: ' + passN + ' \u0438\u0437 ' + totalQ;
+  document.getElementById('og-back-btn').textContent  = isTutor ? '\u2190 Back' : '\u2190 \u041d\u0430\u0437\u0430\u0434';
+  document.getElementById('og-back-btn2').textContent = isTutor ? '\u2190 Back' : '\u2190 \u041d\u0430\u0437\u0430\u0434';
+  document.getElementById('og-confirm-btn').textContent = isTutor ? 'Confirm \u2713' : '\u041f\u043e\u0434\u0442\u0432\u0435\u0440\u0434\u0438\u0442\u044c \u2713';
+  document.getElementById('og-confirm-btn').className = 'quiz-nav-btn primary' + (isAdmin ? ' admin-col' : '');
+  document.getElementById('og-confirm-btn').disabled  = true;
+
+  // Score pill
+  var pill = document.getElementById('og-verdict-pill');
+  pill.className = 'og-verdict-pill pending';
+  pill.textContent = isTutor ? 'Pending all grades' : '\u041e\u0436\u0438\u0434\u0430\u043d\u0438\u0435 \u043e\u0446\u0435\u043d\u043e\u043a';
+  document.getElementById('og-score-big').textContent = S.correct + '+?';
+  document.getElementById('og-pass-fill').style.width = '0%';
+  document.getElementById('og-pass-fill').style.background = 'var(--g4)';
+
+  // Reset grades
+  S_openGrades = {};
+
+  // Build cards
+  var list = document.getElementById('og-list');
+  list.innerHTML = '';
+  list.setAttribute('data-open-total', openQs.length);
+
+  for(var k=0; k<openQs.length; k++){
+    var q    = openQs[k].q;
+    var qIdx = openQs[k].i;
+    var ans  = (S.openAnswers && S.openAnswers[qIdx]) || (typeof S.certAnswers[qIdx] === 'string' ? S.certAnswers[qIdx] : '') || '';
+
+    var card = document.createElement('div');
+    card.className = 'og-card';
+    card.id = 'og-card-' + qIdx;
+
+    // top bar
+    var top = document.createElement('div');
+    top.className = 'og-card-top';
+    top.innerHTML =
+      '<span class="og-card-tag ' + accentClass + '">' + q.mod + '</span>' +
+      '<span class="og-card-num">Q' + (qIdx+1) + '</span>';
+    card.appendChild(top);
+
+    // question
+    var qEl = document.createElement('div');
+    qEl.className = 'og-q';
+    qEl.textContent = q.q;
+    card.appendChild(qEl);
+
+    // student answer
+    var aBox = document.createElement('div');
+    aBox.className = 'og-answer';
+    var aLbl = document.createElement('div');
+    aLbl.className = 'og-answer-lbl';
+    aLbl.textContent = isTutor ? "Student's answer:" : "\u041e\u0442\u0432\u0435\u0442 \u0441\u0442\u0443\u0434\u0435\u043d\u0442\u0430:";
+    aBox.appendChild(aLbl);
+    if(ans && ans.trim()){
+      var aBody = document.createElement('div');
+      aBody.className = 'og-answer-body';
+      aBody.textContent = ans;
+      aBox.appendChild(aBody);
+    } else {
+      var aEmpty = document.createElement('div');
+      aEmpty.className = 'og-answer-empty';
+      aEmpty.textContent = isTutor ? '(no answer provided)' : '(\u043e\u0442\u0432\u0435\u0442 \u043d\u0435 \u043f\u0440\u0435\u0434\u043e\u0441\u0442\u0430\u0432\u043b\u0435\u043d)';
+      aBox.appendChild(aEmpty);
+    }
+    card.appendChild(aBox);
+
+    // reference answer
+    if(q.refAnswer){
+      var rBox = document.createElement('div');
+      rBox.className = 'og-ref';
+      var rLbl = document.createElement('div');
+      rLbl.className = 'og-ref-lbl';
+      rLbl.textContent = isTutor ? '\u{1F4A1} Reference answer:' : '\u{1F4A1} \u042d\u0442\u0430\u043b\u043e\u043d\u043d\u044b\u0439 \u043e\u0442\u0432\u0435\u0442:';
+      var rBody = document.createElement('div');
+      rBody.className = 'og-ref-body';
+      rBody.textContent = q.refAnswer;
+      rBox.appendChild(rLbl);
+      rBox.appendChild(rBody);
+      card.appendChild(rBox);
+    }
+
+    // grade buttons — use closure via data-idx
+    var row = document.createElement('div');
+    row.className = 'og-grade-row';
+
+    var cBtn = document.createElement('button');
+    cBtn.className = 'og-grade-btn correct';
+    cBtn.id = 'ogc-' + qIdx;
+    cBtn.setAttribute('data-idx', qIdx);
+    cBtn.setAttribute('data-val', 'true');
+    cBtn.innerHTML = '<span style="font-size:22px;line-height:1">\u2713</span>' + (isTutor ? ' Correct' : ' \u0412\u0435\u0440\u043d\u043e');
+    cBtn.onclick = function(){ gradeOpen(parseInt(this.getAttribute('data-idx')), true); };
+
+    var wBtn = document.createElement('button');
+    wBtn.className = 'og-grade-btn wrong';
+    wBtn.id = 'ogw-' + qIdx;
+    wBtn.setAttribute('data-idx', qIdx);
+    wBtn.setAttribute('data-val', 'false');
+    wBtn.innerHTML = '<span style="font-size:22px;line-height:1">\u2717</span>' + (isTutor ? ' Incorrect' : ' \u041d\u0435\u0432\u0435\u0440\u043d\u043e');
+    wBtn.onclick = function(){ gradeOpen(parseInt(this.getAttribute('data-idx')), false); };
+
+    row.appendChild(cBtn);
+    row.appendChild(wBtn);
+    card.appendChild(row);
+    list.appendChild(card);
+  }
+
+  _origGoTo('open-grade');
+}
+
+function gradeOpen(qIdx, isCorrect){
+  S_openGrades[qIdx] = isCorrect;
+
+  var cBtn = document.getElementById('ogc-' + qIdx);
+  var wBtn = document.getElementById('ogw-' + qIdx);
+  var card = document.getElementById('og-card-' + qIdx);
+
+  if(cBtn){ cBtn.className = 'og-grade-btn correct' + (isCorrect  ? ' picked' : ''); }
+  if(wBtn){ wBtn.className = 'og-grade-btn wrong'   + (!isCorrect ? ' picked' : ''); }
+  if(card){ card.className = 'og-card ' + (isCorrect ? 'graded-correct' : 'graded-wrong'); }
+
+  var openTotal = parseInt(document.getElementById('og-list').getAttribute('data-open-total'), 10);
+  refreshOgScore(openTotal);
+}
+
+function refreshOgScore(openTotal){
+  var isTutor      = S.role === 'tutor';
+  var gradedCount  = Object.keys(S_openGrades).length;
+  var openCorrect  = Object.values(S_openGrades).filter(function(v){ return v; }).length;
+  var totalCorrect = S.correct + openCorrect;
+  var totalQ       = S.totalMC + openTotal;
+  var passN        = isTutor ? 45 : 35;
+  var allDone      = gradedCount === openTotal;
+  var pct          = Math.round((totalCorrect / totalQ) * 100);
+
+  // big score
+  document.getElementById('og-score-big').textContent = allDone
+    ? totalCorrect + ' / ' + totalQ
+    : S.correct + '+' + openCorrect + ' / ' + totalQ;
+
+  // progress bar
+  var fill  = document.getElementById('og-pass-fill');
+  var color = allDone ? (totalCorrect >= passN ? 'var(--green)' : 'var(--red)') : 'var(--blue)';
+  fill.style.width      = Math.min(pct, 100) + '%';
+  fill.style.background = color;
+
+  // verdict pill
+  var pill = document.getElementById('og-verdict-pill');
+  if(allDone){
+    var passed = totalCorrect >= passN;
+    pill.className   = 'og-verdict-pill ' + (passed ? 'pass' : 'fail');
+    pill.textContent = passed
+      ? (isTutor ? '\u2705 PASS' : '\u2705 \u0421\u0414\u0410\u041d')
+      : (isTutor ? '\u274C NOT PASSED' : '\u274C \u041D\u0415 \u0421\u0414\u0410\u041D');
+    document.getElementById('og-confirm-btn').disabled = false;
+  } else {
+    pill.className   = 'og-verdict-pill pending';
+    pill.textContent = isTutor
+      ? 'Graded ' + gradedCount + ' of ' + openTotal
+      : '\u041e\u0446\u0435\u043d\u0435\u043d\u043e ' + gradedCount + ' \u0438\u0437 ' + openTotal;
+    document.getElementById('og-confirm-btn').disabled = true;
+  }
+}
+
+function confirmOpenGrades(){
+  var openTotal   = parseInt(document.getElementById('og-list').getAttribute('data-open-total'), 10);
+  var openCorrect = Object.values(S_openGrades).filter(function(v){ return v; }).length;
+  S.openGradesDone = true;
+  S.openCorrect    = openCorrect;
+  S.openTotal      = openTotal;
+  showFinalResult();
+}
+
+function showFinalResult(){
+  const isTutor      = S.role === 'tutor';
+  const openCorrect  = S.openCorrect || 0;
+  const openTotal    = S.openTotal || S.questions.filter(function(q){return q.type==='open';}).length;
+  const totalCorrect = S.correct + openCorrect;
+  const totalQ       = S.totalMC + openTotal;
+  const passThreshold = isTutor ? 45 : 35;
+  const passed       = totalCorrect >= passThreshold;
+
+  // Update result screen elements
+  document.getElementById('result-accent').className = 'result-accent ' + (passed?'pass':'fail');
+  document.getElementById('result-stamp').className = 'result-stamp ' + (passed?'pass':'fail');
+  document.getElementById('result-stamp').textContent = passed ? '✅' : '❌';
+
+  const vEl = document.getElementById('result-verdict');
+  const sEl = document.getElementById('result-sub');
+  if(passed){
+    vEl.textContent = isTutor ? '✓ Certified' : '✓ Сертифицирован';
+    vEl.className = 'result-verdict pass';
+    sEl.textContent = isTutor
+      ? 'You passed the official SOP certification test. You are eligible to start work.'
+      : 'Вы прошли официальный тест. Вы допущены к работе.';
+  } else {
+    vEl.textContent = isTutor ? '✗ Not Passed' : '✗ Не сдан';
+    vEl.className = 'result-verdict fail';
+    sEl.textContent = isTutor
+      ? `Score: ${totalCorrect}/${totalQ}. Review the SOP materials and retake within 7 days.`
+      : `Результат: ${totalCorrect}/${totalQ}. Изучите СОП и повторите попытку в течение 7 дней.`;
+  }
+
+  // Update ring
+  const pct = Math.round((totalCorrect / totalQ) * 100);
+  const ring = document.getElementById('result-ring');
+  const r = 48, circ = 2 * Math.PI * r;
+  const stroke = passed ? '#34C759' : pct >= 60 ? '#FF9500' : '#FF3B30';
+  ring.innerHTML = `<svg style="position:absolute;top:0;left:0" width="110" height="110" viewBox="0 0 110 110">
+    <circle cx="55" cy="55" r="${r}" fill="none" stroke="${passed?'rgba(52,199,89,.15)':'rgba(255,59,48,.1)'}" stroke-width="8"/>
+    <circle cx="55" cy="55" r="${r}" fill="none" stroke="${stroke}" stroke-width="8"
+      stroke-dasharray="${circ}" stroke-dashoffset="${circ-(pct/100)*circ}"
+      stroke-linecap="round" transform="rotate(-90 55 55)"
+      style="transition:stroke-dashoffset 1s ease"/></svg>
+    <div style="position:relative;z-index:1;text-align:center">
+      <div class="result-score-num">${totalCorrect}/${totalQ}</div>
+      <div class="result-score-label">${isTutor?'SCORE':'РЕЗУЛЬТАТ'}</div>
+    </div>`;
+
+  document.getElementById('res-correct').textContent = totalCorrect;
+  document.getElementById('res-wrong').textContent = totalQ - totalCorrect;
+  document.getElementById('res-total').textContent = totalQ;
+  document.getElementById('res-correct-lbl').textContent = isTutor ? 'Correct' : 'Верно';
+  document.getElementById('res-wrong-lbl').textContent = isTutor ? 'Wrong' : 'Неверно';
+  document.getElementById('res-total-lbl').textContent = isTutor ? 'Total' : 'Всего';
+
+  document.getElementById('open-q-notice').classList.add('hidden');
+
+  const msgEl = document.getElementById('result-msg');
+  msgEl.textContent = passed
+    ? (isTutor
+        ? `Full score: ${totalCorrect}/${totalQ} (MC: ${S.correct}/${S.totalMC} + Open: ${openCorrect}/${openTotal}). Show this to your manager.`
+        : `Итог: ${totalCorrect}/${totalQ} (Тест: ${S.correct}/${S.totalMC} + Открытые: ${openCorrect}/${openTotal}). Покажите результат руководителю.`)
+    : (isTutor
+        ? `Score: ${totalCorrect}/${totalQ} (need ${passThreshold}). Re-read all SOP modules and request a new attempt within 7 days.`
+        : `Результат: ${totalCorrect}/${totalQ} (нужно ${passThreshold}). Изучите СОП и запросите повторный тест.`);
+
+  _origGoTo('result');
+}
+
+// ════════════════════════════════════════
+//  REVIEW SCREEN
+// ════════════════════════════════════════
+function showReview(){
+  const isTutor=S.role==='tutor';
+  const letters=['A','B','C','D','E'];
+
+  document.getElementById('review-badge').textContent=isTutor?'Wrong Answers':'Разбор ошибок';
+  document.getElementById('review-title').textContent=isTutor?'Wrong Answers':'Ошибки';
+  document.getElementById('review-sub').textContent=isTutor
+    ?'Questions you answered incorrectly — with correct answers and explanations.'
+    :'Вопросы с ошибками — с правильными ответами и пояснениями.';
+  document.getElementById('review-back-bottom').textContent=isTutor?'← Back to Results':'← К результатам';
+
+  const list=document.getElementById('review-list');
+  list.innerHTML='';
+  let wrongCount=0;
+
+  S.questions.forEach((q,i)=>{
+    if(q.type==='open') return;
+
+    const chosen=S.certAnswers[i];
+    let isCorrect=false;
+
+    if(q.type==='multi'){
+      const sel=chosen instanceof Set?chosen:new Set();
+      const cset=new Set(q.ans);
+      isCorrect=[...cset].every(x=>sel.has(x))&&[...sel].every(x=>cset.has(x));
+    } else {
+      isCorrect=chosen===q.ans;
+    }
+    if(isCorrect) return;
+    wrongCount++;
+
+    /* ── Card ── */
+    const card=document.createElement('div');
+    card.style.cssText='background:var(--white);border-radius:18px;box-shadow:0 1px 3px rgba(0,0,0,.06),0 8px 24px rgba(0,0,0,.06);overflow:hidden;margin-bottom:16px';
+
+    /* header */
+    const hdr=document.createElement('div');
+    hdr.style.cssText='padding:14px 20px 12px;border-bottom:.5px solid var(--g5);display:flex;align-items:center;justify-content:space-between;gap:10px';
+    const modColor=isTutor?'var(--blue)':'var(--purple)';
+    const modBg=isTutor?'var(--blu-lt)':'var(--pur-lt)';
+    hdr.innerHTML=`<span style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:20px;background:${modBg};color:${modColor}">${q.mod}</span>
+      <span style="font-size:12px;font-weight:600;color:var(--red)">Q${i+1} ✗</span>`;
+    card.appendChild(hdr);
+
+    /* question */
+    const qt=document.createElement('div');
+    qt.style.cssText='padding:18px 20px 10px;font-size:15px;font-weight:500;color:var(--g1);line-height:1.6;white-space:pre-wrap';
+    qt.textContent=q.q;
+    card.appendChild(qt);
+
+    /* options */
+    const optsWrap=document.createElement('div');
+    optsWrap.style.cssText='padding:4px 12px 12px;display:flex;flex-direction:column;gap:8px';
+
+    const correctSet=q.type==='multi'?new Set(q.ans):null;
+    const chosenSet=(q.type==='multi'&&chosen instanceof Set)?chosen:null;
+
+    q.opts.forEach((opt,oi)=>{
+      let isOptCorrect,isOptChosen;
+      if(q.type==='multi'){
+        isOptCorrect=correctSet.has(oi);
+        isOptChosen=chosenSet&&chosenSet.has(oi);
+      } else {
+        isOptCorrect=oi===q.ans;
+        isOptChosen=oi===chosen;
+      }
+
+      let bg,border,lBg,lCol;
+      if(isOptCorrect){bg='rgba(52,199,89,.08)';border='var(--green)';lBg='var(--green)';lCol='#fff';}
+      else if(isOptChosen&&!isOptCorrect){bg='rgba(255,59,48,.07)';border='var(--red)';lBg='var(--red)';lCol='#fff';}
+      else{bg='var(--g6)';border='var(--g5)';lBg='var(--white)';lCol='var(--g4)';}
+
+      const row=document.createElement('div');
+      row.style.cssText=`display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-radius:10px;border:1.5px solid ${border};background:${bg}`;
+
+      const lEl=document.createElement('div');
+      lEl.style.cssText=`width:24px;height:24px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;background:${lBg};color:${lCol}`;
+      lEl.textContent=letters[oi];
+
+      const tEl=document.createElement('div');
+      tEl.style.cssText='font-size:13px;color:var(--g1);line-height:1.5;padding-top:2px;flex:1';
+      tEl.textContent=opt;
+
+      const tags=document.createElement('div');
+      tags.style.cssText='margin-left:6px;flex-shrink:0;display:flex;flex-direction:column;gap:3px;align-items:flex-end;padding-top:2px';
+      if(isOptCorrect){
+        const t=document.createElement('span');
+        t.style.cssText='font-size:10px;font-weight:700;color:var(--green);background:rgba(52,199,89,.12);border-radius:5px;padding:2px 7px;white-space:nowrap';
+        t.textContent=isTutor?'✓ CORRECT':'✓ ВЕРНО';
+        tags.appendChild(t);
+      }
+      if(isOptChosen&&!isOptCorrect){
+        const t=document.createElement('span');
+        t.style.cssText='font-size:10px;font-weight:700;color:var(--red);background:rgba(255,59,48,.1);border-radius:5px;padding:2px 7px;white-space:nowrap';
+        t.textContent=isTutor?'✗ YOUR ANSWER':'✗ ВАШ ОТВЕТ';
+        tags.appendChild(t);
+      }
+
+      row.appendChild(lEl); row.appendChild(tEl); row.appendChild(tags);
+      optsWrap.appendChild(row);
+    });
+    card.appendChild(optsWrap);
+
+    /* explanation */
+    const expText=buildExplanation(q,isTutor);
+    if(expText){
+      const expDiv=document.createElement('div');
+      expDiv.style.cssText=`margin:0 12px 16px;padding:12px 14px;border-radius:10px;background:${isTutor?'var(--blu-lt)':'var(--pur-lt)'};border:1px solid ${isTutor?'rgba(0,122,255,.15)':'rgba(175,82,222,.15)'};font-size:13px;color:var(--g1);line-height:1.6`;
+      expDiv.innerHTML=`<span style="font-weight:700;color:${isTutor?'var(--blue)':'var(--purple)'}">${isTutor?'💡 Explanation:':'💡 Пояснение:'}</span> ${expText}`;
+      card.appendChild(expDiv);
+    }
+
+    list.appendChild(card);
+  });
+
+  if(wrongCount===0){
+    list.innerHTML=`<div style="text-align:center;padding:40px 20px;background:var(--white);border-radius:18px;box-shadow:0 1px 3px rgba(0,0,0,.06)">
+      <div style="font-size:48px;margin-bottom:16px">🎯</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--green);margin-bottom:8px">${isTutor?'No mistakes!':'Без ошибок!'}</div>
+      <div style="font-size:14px;color:var(--g3)">${isTutor?'You answered all auto-graded questions correctly.':'Все тестовые вопросы отвечены верно.'}</div>
+    </div>`;
+  }
+
+  _origGoTo('review');
+}
+
+function buildExplanation(q,isTutor){
+  if(q.exp) return q.exp;
+  const letters=['A','B','C','D','E'];
+  if(Array.isArray(q.ans)){
+    return (isTutor?'Correct answers: ':'Правильные ответы: ')+'<strong>'+q.ans.map(i=>letters[i]+') '+q.opts[i]).join(' &amp; ')+'</strong>';
+  }
+  if(q.ans!==undefined&&q.opts){
+    return (isTutor?'The correct answer is: ':'Правильный ответ: ')+'<strong>'+letters[q.ans]+') '+q.opts[q.ans]+'</strong>';
+  }
+  return '';
+}
+</script>
+</body>
+</html>
