@@ -401,7 +401,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--g6);color:var(--g1);min-h
       <div id="hub-cert-card" class="hub-card cert tutor" onclick="goToPassword()">
         <div class="hub-card-icon">📋</div>
         <div class="hub-card-title" id="hub-cert-title">Certification Test</div>
-        <p class="hub-card-desc" id="hub-cert-desc">The official SOP test. Password required. Timed and scored. 95% to pass (45/47).</p>
+        <p class="hub-card-desc" id="hub-cert-desc">The official SOP test. Password required. Timed and scored. 95% to pass (47/49).</p>
         <div class="hub-card-meta" id="hub-cert-meta">Password required · 30 min · Official</div>
       </div>
     </div>
@@ -617,17 +617,17 @@ const TUTOR_CERT = [
    opts:['Reviewing the Teacher\'s Guide and planning the lesson in advance','Entering the class without preparation and deciding activities spontaneously','Adjusting lesson pace while following the plan','Assigning minor exercises as homework'],ans:1},
   // MODULE 3
   {mod:'Module 3 — Testing & Certification',type:'mc',
-   q:'Mid Test score = 58/80. Result?',
+   q:'Mid Test score = 72/100. Result?',
    opts:['Fail','Pass','Retake','Speaking decides'],ans:1},
   {mod:'Module 3 — Testing & Certification',type:'mc',
-   q:'Final Test = 83/120, Speaking = 7/10. Result?',
-   opts:['Pass — speaking compensates','Fail — certificate issued anyway','The student may retake the written test to reach the ≥84 threshold','Retake speaking only — written is ignored'],ans:2},
+   q:'Final Test = 69/100, Speaking = 7/10. Result?',
+   opts:['Pass — speaking compensates','Fail — certificate issued anyway','The student may retake the written test to reach the ≥70 threshold','Retake speaking only — written is ignored'],ans:2},
   {mod:'Module 3 — Testing & Certification',type:'mc',
-   q:'Final Test = 84/120, Speaking = 6/10. Result?',
+   q:'Final Test = 70/100, Speaking = 6/10. Result?',
    opts:['Pass','Retake speaking only','Fail without retake','Retake final only'],ans:1},
   {mod:'Module 3 — Testing & Certification',type:'mc',
    q:'Which condition is mandatory to pass the Final Test?',
-   opts:['Final ≥84','Speaking ≥7','Final ≥84 AND Speaking ≥7','Either one is enough'],ans:2},
+   opts:['Final ≥70','Speaking ≥7','Final ≥70 AND Speaking ≥7','Either one is enough'],ans:2},
   {mod:'Module 3 — Testing & Certification',type:'mc',
    q:'A student fails the speaking part. What is allowed?',
    opts:['No second attempt','One speaking retake','Certificate anyway','Ignore speaking'],ans:1},
@@ -641,6 +641,12 @@ const TUTOR_CERT = [
    q:'Which section must always be first?',
    opts:['Reading','Writing','Listening','Tutor decides'],ans:2},
   {mod:'Module 3 — Testing & Certification',type:'mc',
+   q:'Where does the tutor get the printable Mid or Final Test?',
+   opts:['PDF files attached to the Notion test page','The Sevenine Test Platform: staff → level card → Official → PDF','Admin sends it on Telegram before the test','The Navigate Teacher\'s Guide'],ans:1},
+  {mod:'Module 3 — Testing & Certification',type:'mc',
+   q:'Where is the listening audio for the Mid and Final Tests?',
+   opts:['On the level\'s Tests page in Notion (Teaching Programmes)','Inside the printed test','Students download it from the Student Handbook','The tutor reads the script aloud'],ans:0},
+  {mod:'Module 3 — Testing & Certification',type:'mc',
    q:'Before giving any test, what must the tutor do regarding timing?',
    opts:['Use the same timing for all levels','Ask admin personally about the timing','Check the test page of the corresponding level in Notion','Decide based on class length'],ans:2},
   {mod:'Module 3 — Testing & Certification',type:'mc',
@@ -648,17 +654,17 @@ const TUTOR_CERT = [
    opts:['From admin or director','Student Handbook','Test page of the corresponding level in Notion','CRM group chat'],ans:2},
   {mod:'Module 3 — Testing & Certification',type:'mc',
    q:'Which statement about the Final Test retake is true?',
-   opts:['It is the same test document — repeated identically','The tutor creates a custom version based on weak areas','It uses the dedicated retake test document found at the end of the Final Test page in Notion','Admin prepares a new version for each retake'],ans:2},
+   opts:['It is the same test document — repeated identically','The tutor creates a custom version based on weak areas','It uses the dedicated Retake test on the Sevenine Test Platform (staff → level card → Retake → PDF)','Admin prepares a new version for each retake'],ans:2},
   {mod:'Module 3 — Testing & Certification',type:'mc',
    q:'Where is the retake test document located?',
-   opts:['Admin prepares and sends it before each retake','In the Mid Test folder in Notion','At the end of the Final Test page of the designated level in Notion','The tutor generates it from the previous test'],ans:2},
+   opts:['Admin prepares and sends it before each retake','In the Mid Test folder in Notion','On the Sevenine Test Platform (staff → level card → Retake → PDF)','The tutor generates it from the previous test'],ans:2},
   {mod:'Module 3 — Testing & Certification',type:'mc',
    q:'Which practice is a serious violation?',
    opts:['Using the official retake file','Checking timing before the test','Giving students the same Final Test again','Starting the test with listening'],ans:2},
   {mod:'Module 3 — Testing & Certification',type:'calc',
-   q:'A student scored 87 points out of 120 on the Final Test.\n\nConvert this result into a percentage (e.g. write "72.5"):',
-   opts:['72.5%','70%','72%','75%'],ans:0,
-   hint:'87 ÷ 120 × 100 = 72.5%'},
+   q:'A student scored 64 out of 100 on the written Final Test.\n\nHow many more points did they need to pass?',
+   opts:['6','16','4','0'],ans:0,
+   hint:'Pass mark is 70/100: 70 − 64 = 6'},
   // MODULE 4
   {mod:'Module 4 — Speaking Programme & CPT',type:'mc',
    q:'Teaching Navigate without using the Classroom Presentation Tool is:',
@@ -851,7 +857,7 @@ const TUTOR_TRAINING_QUIZZES = [
   {name:'Demo Lessons & Test Retake Procedures',topic:'Teaching SOP',qs:[
     {mod:'Demo & Retakes',type:'mc',q:'During a demo lesson, should the tutor run a special showcase or a normal lesson?',opts:['A showcase with the best activities only','A normal lesson — the demo student observes authentic classroom life','A placement test to assess the new student','A speaking-only session'],ans:1,exp:'Demo lessons are real lessons. The new student experiences genuine classroom dynamics, not a staged performance.'},
     {mod:'Demo & Retakes',type:'mc',q:'A student scored 55% on the Final Test. Are they eligible for a retake?',opts:['No — below 60% means repeat the level','Yes — 50% or above qualifies for one retake','Yes — any score qualifies for a retake','Only if the tutor recommends it'],ans:1,exp:'Students who scored 50% or above on the Final Test are eligible for one retake. Below 50% means repeating the level.'},
-    {mod:'Demo & Retakes',type:'mc',q:'Where is the Final Test retake document located?',opts:['Admin prints a fresh version','In the Mid Test folder in Notion','In the Final Test → Retake section of the corresponding level page in Notion','The tutor creates it based on weak areas'],ans:2,exp:'The retake is found in the Final Test → Retake section of the corresponding level page in Notion.'},
+    {mod:'Demo & Retakes',type:'mc',q:'Where is the Final Test retake document located?',opts:['Admin prints a fresh version','In the Mid Test folder in Notion','On the Sevenine Test Platform (staff → level card → Retake → PDF)','The tutor creates it based on weak areas'],ans:2,exp:'Retake tests are on the Sevenine Test Platform: open the level card → Retake, then print the PDF.'},
     {mod:'Demo & Retakes',type:'mc',q:'A student fails both the Final Test and the retake. What happens next?',opts:['They get a third attempt','They receive a certificate with a note','They are moved to another group to repeat the level, preferably joining from the middle','They are removed from Sevenine'],ans:2,exp:'Failed Retake SOP: move to another group to repeat the level, preferably joining from the middle of the level.'},
     {mod:'Demo & Retakes',type:'mc',q:'Why does the lesson theme in CRM help when inviting a student to a demo lesson?',opts:['It determines which teacher leads the demo','It helps admin decide which group is most suitable based on the current topic','It is required for the attendance record','It affects which room is assigned'],ans:1,exp:'Per the "Why and how to set lesson theme in CRM" SOP: the lesson theme helps admin select the most suitable group for a demo student.'},
     {mod:'Demo & Retakes',type:'mc',q:'A tutor discovers mid-lesson that the lesson theme was not set in CRM from the previous session. What must they do?',opts:['Leave it — the previous tutor\'s responsibility','Set it now for the current lesson and note the oversight to admin','Move on — CRM is admin\'s job','Ask admin to correct it after class'],ans:1,exp:'Tutors must keep CRM up to date. If a theme was missed, set it as soon as noticed and inform admin of the oversight.'},
@@ -921,16 +927,16 @@ const TUTOR_TRAINING_QUIZZES = [
     {mod:'CRM Deep Dive',type:'mc',q:'Which of the following does NOT trigger a group name update?',opts:['Room change','Time change','New student joining the group','Tariff change'],ans:2,exp:'A new student joining does not affect the group name. Triggers: day, time, level, tariff, or room changes only.'},
   ]},
   {name:'Testing Procedures — Advanced',topic:'Testing SOP',qs:[
-    {mod:'Testing Advanced',type:'mc',q:'A student scores 83/120 on the Final Test and 8/10 on speaking. What options does the student have?',opts:['Pass — speaking score compensates for the low written score','The student may retake the written test to reach the ≥84 threshold','Certificate issued — close enough','Retake speaking only — the written part is not retakable'],ans:1,exp:'83/120 is below the ≥84 threshold. Speaking passes (8/10 ≥ 7). The student may retake the written Final Test to reach the required score.'},
-    {mod:'Testing Advanced',type:'mc',q:'A student passes the Final Test (85/120) but scores 6/10 on speaking. What happens?',opts:['Full pass — Final Test is the main criteria','Fail on both — must retake everything','One speaking retake is allowed','Must retake the full Final Test'],ans:2,exp:'Final ≥84 passes. Speaking fails (below 7). The student gets exactly one speaking retake — not a full test retake.'},
-    {mod:'Testing Advanced',type:'mc',q:'The retake of the Final Test uses:',opts:['The same test document repeated identically','A shortened version created by the tutor','The dedicated retake test document located at the end of the Final Test page in Notion','A new test prepared by admin'],ans:2,exp:'The dedicated retake test document is used — found at the end of the Final Test page for that level in Notion.'},
-    {mod:'Testing Advanced',type:'mc',q:'A tutor gives the same Final Test document for the retake. This is:',opts:['Fine if enough time has passed','A minor procedural error','A serious SOP violation','Fine if some questions are changed'],ans:2,exp:'Using the same test for retakes is explicitly a serious SOP violation. The alternate variant is mandatory.'},
+    {mod:'Testing Advanced',type:'mc',q:'A student scores 69/100 on the Final Test and 8/10 on speaking. What options does the student have?',opts:['Pass — speaking score compensates for the low written score','The student may retake the written test to reach the ≥70 threshold','Certificate issued — close enough','Retake speaking only — the written part is not retakable'],ans:1,exp:'69/100 is below the ≥70 threshold. Speaking passes (8/10 ≥ 7). The student may retake the written Final Test to reach the required score.'},
+    {mod:'Testing Advanced',type:'mc',q:'A student passes the Final Test (75/100) but scores 6/10 on speaking. What happens?',opts:['Full pass — Final Test is the main criteria','Fail on both — must retake everything','One speaking retake is allowed','Must retake the full Final Test'],ans:2,exp:'Final ≥70 passes. Speaking fails (below 7). The student gets exactly one speaking retake — not a full test retake.'},
+    {mod:'Testing Advanced',type:'mc',q:'The retake of the Final Test uses:',opts:['The same test document repeated identically','A shortened version created by the tutor','The dedicated Retake test on the Sevenine Test Platform (staff → level card → Retake → PDF)','A new test prepared by admin'],ans:2,exp:'The dedicated Retake test is used — on the Sevenine Test Platform: level card → Retake → PDF.'},
+    {mod:'Testing Advanced',type:'mc',q:'A tutor gives the same Final Test document for the retake. This is:',opts:['Fine if enough time has passed','A minor procedural error','A serious SOP violation','Fine if some questions are changed'],ans:2,exp:'Using the same test for retakes is explicitly a serious SOP violation. The dedicated Retake test (on the test platform) is mandatory.'},
     {mod:'Testing Advanced',type:'mc',q:'The writing section is:',opts:['Done on a separate day','Included in the fully printed test — not separate','Optional at tutor discretion','Completed at home'],ans:1,exp:'Writing is included in the fully printed test. It is never administered separately or made optional.'},
-    {mod:'Testing Advanced',type:'mc',q:'A student asks to skip speaking and pass on written score alone. The answer is:',opts:['Yes — if written score is very high','Yes — speaking is supplementary','No — both Final (≥84) AND Speaking (≥7) are mandatory simultaneously','Only for upper-intermediate students'],ans:2,exp:'Both conditions are mandatory. Neither substitutes for the other.'},
-    {mod:'Testing Advanced',type:'mc',q:'A student scores exactly 84/120 on Final and 7/10 on speaking. Result?',opts:['Fail — needs more than 84','Pass','Retake speaking','Borderline — director decides'],ans:1,exp:'84/120 meets the ≥84 threshold. 7/10 meets the ≥7 threshold. Result: Pass.'},
+    {mod:'Testing Advanced',type:'mc',q:'A student asks to skip speaking and pass on written score alone. The answer is:',opts:['Yes — if written score is very high','Yes — speaking is supplementary','No — both Final (≥70) AND Speaking (≥7) are mandatory simultaneously','Only for upper-intermediate students'],ans:2,exp:'Both conditions are mandatory. Neither substitutes for the other.'},
+    {mod:'Testing Advanced',type:'mc',q:'A student scores exactly 70/100 on Final and 7/10 on speaking. Result?',opts:['Fail — needs more than 70','Pass','Retake speaking','Borderline — director decides'],ans:1,exp:'70/100 meets the ≥70 threshold. 7/10 meets the ≥7 threshold. Result: Pass.'},
     {mod:'Testing Advanced',type:'mc',q:'A student scored 47% on the Final Test. What happens?',opts:['One retake offered — close to 50%','No retake — must repeat the level','Tutor decides based on effort','Retake with extra preparation time'],ans:1,exp:'Below 50% = no retake eligibility. The student must repeat the full level.'},
     {mod:'Testing Advanced',type:'mc',q:'Where does the tutor find the correct time allocation for a test?',opts:['Ask admin before each test','Decide based on class length','The test page for the corresponding level in Notion','The Teacher\'s Guide appendix'],ans:2,exp:'Time allocations are level-specific and are found on the test page in Notion.'},
-    {mod:'Testing Advanced',type:'mc',q:'A student misses the speaking assessment but scored 90/120 on the written Final Test. Result?',opts:['Pass — written score is strong','Fail — speaking is a mandatory condition','Partial certificate until speaking is done','Tutor estimates a speaking score'],ans:1,exp:'Both conditions must be met simultaneously. Missing speaking = Fail, regardless of the written score.'},
+    {mod:'Testing Advanced',type:'mc',q:'A student misses the speaking assessment but scored 90/100 on the written Final Test. Result?',opts:['Pass — written score is strong','Fail — speaking is a mandatory condition','Partial certificate until speaking is done','Tutor estimates a speaking score'],ans:1,exp:'Both conditions must be met simultaneously. Missing speaking = Fail, regardless of the written score.'},
   ]},
   {name:'Coins & Shop — Advanced Scenarios',topic:'Sevenine Shop SOP',qs:[
     {mod:'Shop Advanced',type:'mc',q:'What is the purpose of the Sevenine Shop?',opts:['Generate revenue for the school','Encourage top-performing students through a coin reward system','Sell stationery and materials','Fund IELTS preparation courses'],ans:1,exp:'The Sevenine Shop is a reward mechanism specifically for encouraging strong academic performance — not a commercial tool.'},
@@ -947,7 +953,7 @@ const TUTOR_TRAINING_QUIZZES = [
   {name:'Mixed SOP Scenarios',topic:'All SOPs',qs:[
     {mod:'Mixed',type:'mc',q:'A substitute tutor steps in at short notice. Where do they find what topic the group is studying?',opts:['They call the regular tutor','They ask the students','The lesson theme set in CRM','They start from the beginning of the current unit'],ans:2,exp:'The lesson theme in CRM exists precisely so substitutes know exactly what to cover.'},
     {mod:'Mixed',type:'mc',q:'A tutor leaves after class without turning off the projector. This:',opts:['Has no consequence — admin turns it off','Is a minor oversight','Shortens the projector lamp lifetime and is a violation','Is only a problem if it happens repeatedly'],ans:2,exp:'Projector lamp has a limited lifetime. Leaving it on unnecessarily is an Equipment SOP violation.'},
-    {mod:'Mixed',type:'mc',q:'A student scores 90/120 on Final but misses the speaking assessment entirely. Result?',opts:['Pass — written score is very strong','Fail — speaking (≥7) is mandatory','Partial certificate pending speaking','Tutor estimates a speaking score'],ans:1,exp:'Both conditions must be met: Final ≥84 AND Speaking ≥7. No speaking attempt = Fail.'},
+    {mod:'Mixed',type:'mc',q:'A student scores 90/100 on Final but misses the speaking assessment entirely. Result?',opts:['Pass — written score is very strong','Fail — speaking (≥7) is mandatory','Partial certificate pending speaking','Tutor estimates a speaking score'],ans:1,exp:'Both conditions must be met: Final ≥70 AND Speaking ≥7. No speaking attempt = Fail.'},
     {mod:'Mixed',type:'mc',q:'A student submits homework that is partially correct. The tutor should:',opts:['Mark it as incorrect and give zero coins','Mark only what is fully correct and ignore the rest','Acknowledge the effort, identify errors clearly, and give the student a chance to correct them','Give full credit — effort is what counts'],ans:2,exp:'Partial homework should be acknowledged honestly — recognise effort, identify specific errors, and follow the error correction approach: give the student a chance to correct before the tutor intervenes.'},
     {mod:'Mixed',type:'mc',q:'A tutor notices a student has been disengaged and quiet for two consecutive lessons. What is the correct action?',opts:['Ignore it — students have off days','Call on them more to re-engage them publicly','Note it in the Performance Report and mention it to admin for follow-up','Send a message to the student in the group chat'],ans:2,exp:'Persistent disengagement should be noted in the weekly SPR and flagged to admin. This is the formal communication channel for student welfare concerns.'},
     {mod:'Mixed',type:'mc',q:'A tutor finishes a Navigate unit but the Speaking Programme for it is incomplete. What happens?',opts:['Move on — speaking is covered in the next unit','Complete the Speaking Programme before moving on to the next unit','Ask admin for an extension','Incorporate it into the next unit\'s warm-up'],ans:1,exp:'The Speaking Programme must be completed by the last subunit of the same Navigate unit. Moving on without completing it violates the SOP.'},
@@ -1122,10 +1128,10 @@ function selectRole(role){
   cc.className='hub-card cert '+role;
   document.getElementById('hub-cert-title').textContent=isTutor?'Certification Test':'Сертификационный тест';
   document.getElementById('hub-cert-desc').textContent=isTutor
-    ?'Official SOP test. Password required. 95% to pass (45/47).'
+    ?'Official SOP test. Password required. 95% to pass (47/49).'
     :'Официальный тест СОП. Требуется пароль. Проходной балл: 35/39.';
   document.getElementById('hub-cert-meta').textContent=isTutor
-    ?'Password required · 30 min · 45/47 to pass'
+    ?'Password required · 30 min · 47/49 to pass'
     :'Требуется пароль · 30 мин · 35/39 для прохождения';
   goTo('hub');
 }
@@ -1532,7 +1538,7 @@ function showResult(timeout=false){
   // Pass thresholds
   let passed=false;
   if(isCert){
-    if(isTutor) passed=correct>=45; // 45/47
+    if(isTutor) passed=correct>=47; // 47/49 (95%)
     else passed=correct>=35;        // 35/39 (MC only)
   } else {
     passed=pct>=70;
@@ -1608,7 +1614,7 @@ function showResult(timeout=false){
         :`Авто-оценка: ${correct}/${mcTotal}. Покажите результат руководителю для подтверждения допуска.`;
     } else {
       msgEl.textContent=isTutor
-        ?`You scored ${correct}/${mcTotal} (need 45). Re-read all SOP modules and request a new authorised attempt within 7 days.`
+        ?`You scored ${correct}/${mcTotal} (need 47). Re-read all SOP modules and request a new authorised attempt within 7 days.`
         :`Результат: ${correct}/${mcTotal} (нужно 35). Перечитайте СОП и запросите повторный тест в течение 7 дней.`;
     }
   } else {
@@ -1757,7 +1763,7 @@ function showOpenGrade(){
   if(openQs.length === 0){ showFinalResult(); return; }
 
   var accentClass = isTutor ? 'tutor' : 'admin';
-  var passN       = isTutor ? 45 : 35;
+  var passN       = isTutor ? 47 : 35;
   var totalQ      = S.totalMC + openQs.length;
 
   // Header
@@ -1905,7 +1911,7 @@ function refreshOgScore(openTotal){
   var openCorrect  = Object.values(S_openGrades).filter(function(v){ return v; }).length;
   var totalCorrect = S.correct + openCorrect;
   var totalQ       = S.totalMC + openTotal;
-  var passN        = isTutor ? 45 : 35;
+  var passN        = isTutor ? 47 : 35;
   var allDone      = gradedCount === openTotal;
   var pct          = Math.round((totalCorrect / totalQ) * 100);
 
@@ -1953,7 +1959,7 @@ function showFinalResult(){
   const openTotal    = S.openTotal || S.questions.filter(function(q){return q.type==='open';}).length;
   const totalCorrect = S.correct + openCorrect;
   const totalQ       = S.totalMC + openTotal;
-  const passThreshold = isTutor ? 45 : 35;
+  const passThreshold = isTutor ? 47 : 35;
   const passed       = totalCorrect >= passThreshold;
 
   // Update result screen elements
